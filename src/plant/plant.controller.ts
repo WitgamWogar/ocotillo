@@ -7,7 +7,7 @@ export class PlantController {
     constructor(private plantService: PlantService) { }
 
     // add a plant
-    @Post('/create')
+    @Post()
     async addPlant(@Res() res, @Body() createPlantDTO: CreatePlantDTO) {
         const plant = await this.plantService.addPlant(createPlantDTO);
         return res.status(HttpStatus.OK).json({
@@ -17,14 +17,14 @@ export class PlantController {
     }
 
     // Retrieve plants list
-    @Get('plants')
+    @Get()
     async getAllPlant(@Res() res) {
         const plants = await this.plantService.getAllPlant();
         return res.status(HttpStatus.OK).json(plants);
     }
 
     // Fetch a particular plant using ID
-    @Get('plant/:plantID')
+    @Get(':plantID')
     async getPlant(@Res() res, @Param('plantID') plantID) {
         const plant = await this.plantService.getPlant(plantID);
         if (!plant) throw new NotFoundException('Plant does not exist!');
@@ -32,7 +32,7 @@ export class PlantController {
     }
 
     // Update a plant's details
-    @Put('/update')
+    @Put()
     async updatePlant(@Res() res, @Query('plantID') plantID, @Body() createPlantDTO: CreatePlantDTO) {
         const plant = await this.plantService.updatePlant(plantID, createPlantDTO);
         if (!plant) throw new NotFoundException('Plant does not exist!');
@@ -43,7 +43,7 @@ export class PlantController {
     }
 
     // Delete a plant
-    @Delete('/delete')
+    @Delete()
     async deletePlant(@Res() res, @Query('plantID') plantID) {
         const plant = await this.plantService.deletePlant(plantID);
         if (!plant) throw new NotFoundException('Plant does not exist');

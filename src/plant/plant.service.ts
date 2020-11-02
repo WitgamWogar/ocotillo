@@ -19,7 +19,7 @@ export class PlantService {
     }
     // post a single plant
     async addPlant(createPlantDTO: CreatePlantDTO): Promise<Plant> {
-        const newPlant = await this.plantModel(createPlantDTO);
+        const newPlant = new this.plantModel(createPlantDTO);
         return newPlant.save();
     }
     // Edit plant details

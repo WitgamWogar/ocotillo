@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ServeStaticModule} from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
+import { PlantModule } from './plant/plant.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { join } from 'path';
       rootPath: join(__dirname, '..', 'client/dist'),
     }),
     MongooseModule.forRoot('mongodb://localhost/nest'),
+    PlantModule,
   ],
   controllers: [AppController],
   providers: [AppService],

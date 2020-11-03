@@ -7,6 +7,9 @@ export type PlantDocument = Plant & Document;
 @Schema()
 export class Plant {
   @Prop()
+  id: number;
+
+  @Prop()
   scientific_name: string;
 
   @Prop()
@@ -16,13 +19,16 @@ export class Plant {
   nickname: string;
 
   @Prop()
-  aquired_at: string;
+  acquired_at: Date;
 
   @Prop([String])
   source: string[];
 
+  @Prop()
+  location: number;
+
   @Prop({default: Date.now })
-  acquired_at: Date;
+  created_at: Date;
 }
 
 export const PlantSchema = SchemaFactory.createForClass(Plant);

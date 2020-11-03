@@ -1,8 +1,24 @@
+import { IsEmail, IsNotEmpty, IsIn, IsDate } from 'class-validator';
+
 export class CreatePlantDTO {
-    readonly scientific_name: string;
-    readonly common_name: string;
-    readonly nickname: string;
-    readonly aquired_at: string;
-    readonly source: string[];
-    readonly acquired_at: Date;
+  @IsNotEmpty()
+  scientific_name: string;
+
+  common_name: string;
+
+  nickname: string;
+
+  @IsDate({
+      message: 'acquisition_date must be a valid date',
+  })
+  acquired_at: Date;
+
+  @IsNotEmpty()
+  location: string;
+
+  @IsIn(['Purchase', 'Purchased Seed', 'Wild Seed', 'Harvested Seed', 'Clone'])
+  @IsNotEmpty()
+  source: string;
+
+  readonly created_at: Date;
 }

@@ -10,6 +10,7 @@
             <v-text-field
               label="Scientific Name"
               hint="Jasminum sambac"
+              :error-messages="$validator.get('scientific_name')"
               persistent-hint
               required
             ></v-text-field>
@@ -17,6 +18,7 @@
           <v-col cols="12" sm="6" md="4">
             <v-text-field
               label="Common Name"
+              :error-messages="$validator.get('common_name')"
               hint="Arabian Jasmine"
               persistent-hint
               required
@@ -25,34 +27,31 @@
           <v-col cols="12" sm="6" md="4">
             <v-text-field
               label="Nickname"
+              :error-messages="$validator.get('nickname')"
               hint="e.g. Orlando Bloom"
               persistent-hint
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="4">
             <v-menu
-              ref="dateMenu"
               v-model="dateMenu"
               :close-on-content-click="false"
+              :nudge-right="40"
               transition="scale-transition"
               offset-y
-              max-width="290px"
               min-width="290px"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="dateFormatted"
+                  v-model="plant.acquired_at"
                   label="Acquisition Date"
-                  hint="MM/DD/YYYY format"
-                  persistent-hint
+                  readonly
                   v-bind="attrs"
-                  @blur="date = parseDate(dateFormatted)"
                   v-on="on"
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="acquisitionDate"
-                no-title
+                v-model="plant.acquired_at"
                 @input="dateMenu = false"
               ></v-date-picker>
             </v-menu>
@@ -66,6 +65,7 @@
                 'Harvested Seed',
                 'Clone',
               ]"
+              :error-messages="$validator.get('source')"
               label="Source"
               required
             ></v-select>
@@ -81,6 +81,7 @@
                 'Bathroom',
                 'Yard',
               ]"
+              :error-messages="$validator.get('location')"
               label="Location"
               required
             ></v-select>
@@ -93,7 +94,7 @@
       <v-btn color="blue darken-1" text @click="$emit('cancel')">
         Close
       </v-btn>
-      <v-btn color="blue darken-1" text @click="store" :loading="busy">
+      <v-btn color="blue darken-1" text @click="store" :loading="$network.busy">
         Save
       </v-btn>
     </v-card-actions>
@@ -107,32 +108,25 @@ export default {
   data() {
     return {
       dateMenu: false,
-      acquisitionDate: null,
-      dateFormatted: null,
+      plant: {
+        scientific_name: String,
+        common_name: String,
+        nickname: String,
+        acquired_at: new Date().toISOString().substr(0, 10),
+      },
       busy: false,
     };
   },
-  computed: {
-      computedDateFormatted () {
-        return this.formatDate(this.acquisitionDate)
-      },
-    },
   methods: {
     store() {
-        this.busy = true;
-        axios
-            .post(`http://localhost:3000/api/plant`)
-            .then(data => {
-                this.busy = false;
-                console.log(data.data);
-            });
-    },
-    formatDate (date) {
-        if (!date) return null
-
-        const [year, month, day] = date.split('-')
-        return `${month}/${day}/${year}`
+      // TODO set host const
+      axios.post(`http://localhost:3000/api/plant`).then(data => {
+        console.log(data);
+      });
     },
   },
+  mounted () {
+    
+  }
 };
 </script>

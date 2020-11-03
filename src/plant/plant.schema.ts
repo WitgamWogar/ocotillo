@@ -25,7 +25,7 @@ export class Plant {
   source: string[];
 
   @Prop()
-  location: number;
+  location: string;
 
   @Prop({default: Date.now })
   created_at: Date;

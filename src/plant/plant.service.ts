@@ -23,11 +23,11 @@ export class PlantService {
         return newPlant.save();
     }
     // Edit plant details
-    async updatePlant(plantID, createPlantDTO: CreatePlantDTO): Promise<Plant> {
-        const updatedPlant = await this.plantModel
-            .findByIdAndUpdate(plantID, createPlantDTO, { new: true });
-        return updatedPlant;
-    }
+    // async updatePlant(plantID, createPlantDTO: CreatePlantDTO): Promise<Plant> {
+    //     const updatedPlant = await this.plantModel
+    //         .findByIdAndUpdate(plantID, createPlantDTO, { new: true });
+    //     return updatedPlant;
+    // }
     // Delete a plant
     async deletePlant(plantID): Promise<any> {
         const deletedPlant = await this.plantModel.findByIdAndRemove(plantID);

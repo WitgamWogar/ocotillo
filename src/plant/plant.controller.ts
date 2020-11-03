@@ -32,15 +32,15 @@ export class PlantController {
     }
 
     // Update a plant's details
-    @Put()
-    async updatePlant(@Res() res, @Query('plantID') plantID, @Body() createPlantDTO: CreatePlantDTO) {
-        const plant = await this.plantService.updatePlant(plantID, createPlantDTO);
-        if (!plant) throw new NotFoundException('Plant does not exist!');
-        return res.status(HttpStatus.OK).json({
-            message: 'Plant has been successfully updated',
-            plant
-        });
-    }
+    // @Put()
+    // async updatePlant(@Res() res, @Query('plantID') plantID, @Body() createPlantDTO: CreatePlantDTO) {
+    //     const plant = await this.plantService.updatePlant(plantID, createPlantDTO);
+    //     if (!plant) throw new NotFoundException('Plant does not exist!');
+    //     return res.status(HttpStatus.OK).json({
+    //         message: 'Plant has been successfully updated',
+    //         plant
+    //     });
+    // }
 
     // Delete a plant
     @Delete()

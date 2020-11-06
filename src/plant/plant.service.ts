@@ -8,12 +8,12 @@ import { CreatePlantDTO } from './dto/create-plant.dto';
 export class PlantService {
     constructor(@InjectModel('Plant') private readonly plantModel: Model<Plant>) { }
     // fetch all plants
-    async getAllPlant(): Promise<Plant[]> {
+    async getAllPlants(): Promise<Plant[]> {
         const plants = await this.plantModel.find().exec();
         return plants;
     }
     // Get a single plant
-    async getPlant(plantID): Promise<Plant> {
+    async getPlants(plantID): Promise<Plant> {
         const plant = await this.plantModel.findById(plantID).exec();
         return plant;
     }

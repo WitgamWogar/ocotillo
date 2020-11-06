@@ -19,14 +19,14 @@ export class PlantController {
     // Retrieve plants list
     @Get()
     async getAllPlant(@Res() res) {
-        const plants = await this.plantService.getAllPlant();
+        const plants = await this.plantService.getAllPlants();
         return res.status(HttpStatus.OK).json(plants);
     }
 
     // Fetch a particular plant using ID
     @Get(':plantID')
     async getPlant(@Res() res, @Param('plantID') plantID) {
-        const plant = await this.plantService.getPlant(plantID);
+        const plant = await this.plantService.getPlants(plantID);
         if (!plant) throw new NotFoundException('Plant does not exist!');
         return res.status(HttpStatus.OK).json(plant);
     }

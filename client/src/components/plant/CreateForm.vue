@@ -107,8 +107,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   data() {
     return {
@@ -137,7 +135,7 @@ export default {
     },
     store() {
       // TODO set host const
-      axios.post(`http://localhost:3000/api/plant`, this.plant).then(() => {
+      this.axios.post(`http://localhost:3000/api/plant`, this.plant).then(() => {
         this.notify('Plant Created!');
         this.close();
       });

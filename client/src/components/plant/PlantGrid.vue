@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row no-gutters>
-      <v-col v-for="n in 3" :key="n" cols="12" sm="4">
+      <v-col v-for="plant in plants" :key="plant.id" cols="12" sm="4">
         <div class="ma-2">
           <PlantCard />
         </div>
@@ -17,6 +17,14 @@ export default {
   components: {
     PlantCard,
   },
-  data: () => ({}),
+  data: () => ({
+    plants: [],
+  }),
+  mounted () {
+      // TODO set host const
+      this.axios.get(`http://localhost:3000/api/plant`).then((data) => {
+        console.log(data);
+      });
+  }
 };
 </script>

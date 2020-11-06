@@ -10,6 +10,7 @@
             <v-text-field
               label="Scientific Name"
               hint="Jasminum sambac"
+              v-model="plant.scientific_name"
               :error-messages="$validator.get('scientific_name')"
               persistent-hint
               required
@@ -18,6 +19,7 @@
           <v-col cols="12" sm="6" md="4">
             <v-text-field
               label="Common Name"
+              v-model="plant.common_name"
               :error-messages="$validator.get('common_name')"
               hint="Arabian Jasmine"
               persistent-hint
@@ -27,6 +29,7 @@
           <v-col cols="12" sm="6" md="4">
             <v-text-field
               label="Nickname"
+              v-model="plant.nickname"
               :error-messages="$validator.get('nickname')"
               hint="e.g. Orlando Bloom"
               persistent-hint
@@ -43,7 +46,7 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="plant.acquired_at"
+                  v-model="plant.$acquired_at"
                   label="Acquisition Date"
                   readonly
                   v-bind="attrs"
@@ -51,13 +54,14 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="plant.acquired_at"
+                v-model="plant.$acquired_at"
                 @input="dateMenu = false"
               ></v-date-picker>
             </v-menu>
           </v-col>
           <v-col cols="12" sm="6" md="4">
             <v-select
+              v-model="plant.source"
               :items="[
                 'Purchase',
                 'Purchased Seed',
@@ -73,6 +77,7 @@
           <v-col cols="12" sm="6" md="4">
             <!-- TODO this will be propagated from locations entered by user -->
             <v-select
+              v-model="plant.location"
               :items="[
                 'Kitchen',
                 'Back Patio',
@@ -91,7 +96,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" text @click="$emit('cancel')">
+      <v-btn color="blue darken-1" text @click="close()">
         Close
       </v-btn>
       <v-btn color="blue darken-1" text @click="store" :loading="$network.busy">
@@ -109,24 +114,35 @@ export default {
     return {
       dateMenu: false,
       plant: {
-        scientific_name: String,
-        common_name: String,
-        nickname: String,
-        acquired_at: new Date().toISOString().substr(0, 10),
+        scientific_name: '',
+        common_name: '',
+        nickname: '',
+        $acquired_at: new Date().toISOString().substr(0, 10),
+        acquired_at: new Date().toISOString(),
+        source: '',
+        location: '',
       },
       busy: false,
     };
   },
+  watch: {
+    'plant.$acquired_at': function(newVal) {
+      this.plant.acquired_at = new Date(newVal).toISOString();
+    },
+  },
   methods: {
+    close() {
+      Object.assign(this.$data, this.$options.data.call(this)); // Reset
+      this.$emit('close');
+    },
     store() {
       // TODO set host const
-      axios.post(`http://localhost:3000/api/plant`).then(data => {
-        console.log(data);
+      axios.post(`http://localhost:3000/api/plant`, this.plant).then(() => {
+        this.notify('Plant Created!');
+        this.close();
       });
     },
   },
-  mounted () {
-    
-  }
+  mounted() {},
 };
 </script>

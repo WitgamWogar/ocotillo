@@ -11,7 +11,7 @@
         <PlantGrid/>
 
         <v-dialog v-model="newPlantDialog" max-width="600px">
-            <CreateForm @cancel="newPlantDialog = false" />
+            <CreateForm @close="newPlantDialog = false" />
         </v-dialog>
     </div>
 </template>

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsIn, IsDate } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsIn, IsDate, IsDateString } from 'class-validator';
 
 export class CreatePlantDTO {
   @IsNotEmpty()
@@ -8,8 +8,8 @@ export class CreatePlantDTO {
 
   nickname: string;
 
-  @IsDate({
-      message: 'acquisition_date must be a valid date',
+  @IsDateString({
+      message: 'acquired_at must be a valid date',
   })
   acquired_at: Date;
 

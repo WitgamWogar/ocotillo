@@ -14,7 +14,7 @@
 <script>
 import TopBar from './components/ui/TopBar';
 import CollectionPage from './pages/CollectionPage';
-import Notification from './plugins/Notification';
+import Notification from './components/ui/Notification';
 
 export default {
   name: 'App',

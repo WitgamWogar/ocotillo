@@ -4,7 +4,6 @@ import vuetify from './plugins/vuetify';
 import Validator from "./plugins/Validator";
 import NetworkBus from './plugins/NetworkBus';
 import initInterceptors from "./plugins/interceptors";
-import Notification from './plugins/Notification';
 
 Vue.config.productionTip = false
 
@@ -12,7 +11,6 @@ Vue.prototype.$eventHub = new Vue(); // Global event bus
 
 Vue.prototype.$validator = new Vue(Validator);
 Vue.prototype.$network = new Vue(NetworkBus);
-Vue.prototype.$notification = new Vue(Notification);
 
 initInterceptors();
 

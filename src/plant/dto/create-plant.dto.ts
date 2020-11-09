@@ -20,5 +20,7 @@ export class CreatePlantDTO {
   @IsNotEmpty()
   source: string;
 
+  photos: [];
+
   readonly created_at: Date;
 }

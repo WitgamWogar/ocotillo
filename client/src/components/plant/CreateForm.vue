@@ -92,6 +92,16 @@
             ></v-select>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col>
+            <v-file-input
+              v-model="plant.photos"
+              small-chips
+              multiple
+              label="Photos"
+            ></v-file-input>
+          </v-col>
+        </v-row>
       </v-container>
     </v-card-text>
     <v-card-actions>
@@ -99,7 +109,12 @@
       <v-btn color="blue darken-1" text @click="close()">
         Close
       </v-btn>
-      <v-btn color="blue darken-1" text @click="store" :loading="$network.busy">
+      <v-btn
+        color="blue darken-1"
+        text
+        @click="store"
+        :loading="$network.busy"
+      >
         Save
       </v-btn>
     </v-card-actions>
@@ -119,6 +134,7 @@ export default {
         acquired_at: new Date().toISOString(),
         source: '',
         location: '',
+        photos: [],
       },
       busy: false,
     };
@@ -135,12 +151,39 @@ export default {
     },
     store() {
       // TODO set host const
-      this.axios.post(`http://localhost:3000/api/plant`, this.plant).then(() => {
-        this.notify('Plant Created!');
-        this.$eventHub.$emit('plant-list-updated');
-        this.close();
+      this.axios
+        .post(`http://localhost:3000/api/plant`, this.plant)
+        .then((response) => {
+          if (this.plant.photos.length) {
+            this.uploadPhotos(response.data._id);
+          } else {
+            this.handleSuccess();
+          }
+        });
+    },
+    uploadPhotos(plantId) {
+      let formData = new FormData();
+      
+      this.plant.photos.forEach((photo) => {
+        formData.append('photos', photo);
+      });
+      
+      formData.append('plantId', plantId);
+      
+      this.axios.post('http://localhost:3000/api/plant/photos', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        console.log(response);
+        this.handleSuccess();
       });
     },
+    handleSuccess() {
+this.notify('Plant Created!');
+          this.$eventHub.$emit('plant-list-updated');
+          this.close();
+    }
   },
   mounted() {},
 };

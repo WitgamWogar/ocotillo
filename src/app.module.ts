@@ -5,6 +5,7 @@ import { ServeStaticModule} from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 import { PlantModule } from './plant/plant.module';
+import { PhotoModule } from './photo/photo.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { PlantModule } from './plant/plant.module';
     }),
     MongooseModule.forRoot('mongodb://localhost/nest'),
     PlantModule,
+    PhotoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

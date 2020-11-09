@@ -1,6 +1,7 @@
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { Photo } from 'src/photo/photo.schema';
 
 export type PlantDocument = Plant & Document;
 
@@ -26,6 +27,9 @@ export class Plant {
 
   @Prop()
   location: string;
+
+  @Prop({ type: [Types.ObjectId], ref: Photo })
+  photos: Photo[];
 
   @Prop({default: Date.now })
   created_at: Date;

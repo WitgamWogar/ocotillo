@@ -1,9 +1,9 @@
 <template>
   <v-container>
-    <v-row no-gutters>
-      <v-col v-for="plant in plants" :key="plant.id" cols="12" sm="4">
+    <v-row no-gutters justify="center">
+      <v-col v-for="plant in plants" :key="plant._id" cols="12" sm="4">
         <div class="ma-2">
-          <PlantCard />
+            <PlantCard :plant="plant" />
         </div>
       </v-col>
     </v-row>
@@ -20,11 +20,22 @@ export default {
   data: () => ({
     plants: [],
   }),
-  mounted () {
+  methods: {
+    getPlants() {
       // TODO set host const
-      this.axios.get(`http://localhost:3000/api/plant`).then((data) => {
-        console.log(data);
+      this.axios.get(`http://localhost:3000/api/plant`).then((response) => {
+        this.plants = response.data;
       });
+    },
+  },
+  mounted () {
+      this.getPlants();
+  },
+  created() {
+    let _this = this;
+    this.$eventHub.$on('plant-list-updated', function() {
+      _this.getPlants();
+    });
   }
 };
 </script>

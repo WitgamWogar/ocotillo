@@ -137,6 +137,7 @@ export default {
       // TODO set host const
       this.axios.post(`http://localhost:3000/api/plant`, this.plant).then(() => {
         this.notify('Plant Created!');
+        this.$eventHub.$emit('plant-list-updated');
         this.close();
       });
     },

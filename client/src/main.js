@@ -6,13 +6,14 @@ import NetworkBus from './plugins/NetworkBus';
 import initInterceptors from "./plugins/interceptors";
 import axios from 'axios';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 Vue.prototype.$eventHub = new Vue(); // Global event bus
 
 Vue.prototype.$validator = new Vue(Validator);
 Vue.prototype.$network = new Vue(NetworkBus);
 Vue.prototype.axios = axios;
+axios.defaults.baseURL = 'http://localhost:3000/api/'; // TODO add switch for prod vs dev
 
 initInterceptors();
 

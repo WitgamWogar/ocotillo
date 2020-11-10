@@ -147,7 +147,7 @@ export default {
     store() {
       // TODO set host const
       this.axios
-        .post(`http://localhost:3000/api/plant`, this.plant)
+        .post(`plant`, this.plant)
         .then(response => {
           if (this.plant.photos.length) {
             this.uploadPhotos(response.data.data.id);
@@ -166,13 +166,12 @@ export default {
       formData.append('plantId', plantId);
 
       this.axios
-        .post('http://localhost:3000/api/plant/photos', formData, {
+        .post('plant/photos', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         })
-        .then(response => {
-          console.log(response);
+        .then(() => {
           this.handleSuccess();
         });
     },

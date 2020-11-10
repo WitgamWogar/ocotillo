@@ -4,7 +4,7 @@
       height="200px"
       :src="getImage()"
     >
-      <v-app-bar flat color="#4CAF5078" dense>
+      <v-app-bar flat color="rgba(0, 0, 0, 0.57)" dense>
         <v-toolbar-title class="title white--text pl-0">
           {{ plant.common_name }}
         </v-toolbar-title>
@@ -57,7 +57,7 @@ export default {
   methods: {
     deletePlant() {
       //TODO add confirmation
-      this.axios.delete(`http://localhost:3000/api/plant`, {params:{
+      this.axios.delete(`plant`, {params:{
         plantId: this.plant._id
         }}).then(() => {
           this.$eventHub.$emit('plant-list-updated');

@@ -23,7 +23,7 @@ export default {
   methods: {
     getPlants() {
       // TODO set host const
-      this.axios.get(`http://localhost:3000/api/plant`).then((response) => {
+      this.axios.get(`plant`).then((response) => {
         this.plants = response.data.data;
       });
     },

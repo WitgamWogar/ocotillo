@@ -2,7 +2,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Photo } from '../photos/photo.entity';
 
-@Entity({name: "plants"})
+@Entity({name: "plants"}) //otherwise "plant" is used
 export class Plant {
   @PrimaryGeneratedColumn()
   id: number;

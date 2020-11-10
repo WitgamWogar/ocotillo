@@ -1,7 +1,8 @@
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Exclude } from 'class-transformer';
 import { Document, Types } from 'mongoose';
-import { Photo } from 'src/photo/photo.schema';
+import { Photo } from 'src/photos/photo.schema';
 
 export type PlantDocument = Plant & Document;
 
@@ -11,6 +12,7 @@ export class Plant {
   id: number;
 
   @Prop()
+  @Exclude()
   scientific_name: string;
 
   @Prop()
@@ -22,8 +24,8 @@ export class Plant {
   @Prop()
   acquired_at: Date;
 
-  @Prop([String])
-  source: string[];
+  @Prop()
+  source: string;
 
   @Prop()
   location: string;

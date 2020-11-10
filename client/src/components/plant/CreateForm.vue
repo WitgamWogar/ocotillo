@@ -109,12 +109,7 @@
       <v-btn color="blue darken-1" text @click="close()">
         Close
       </v-btn>
-      <v-btn
-        color="blue darken-1"
-        text
-        @click="store"
-        :loading="$network.busy"
-      >
+      <v-btn color="blue darken-1" text @click="store" :loading="$network.busy">
         Save
       </v-btn>
     </v-card-actions>
@@ -153,9 +148,9 @@ export default {
       // TODO set host const
       this.axios
         .post(`http://localhost:3000/api/plant`, this.plant)
-        .then((response) => {
+        .then(response => {
           if (this.plant.photos.length) {
-            this.uploadPhotos(response.data._id);
+            this.uploadPhotos(response.data.data.id);
           } else {
             this.handleSuccess();
           }
@@ -163,27 +158,29 @@ export default {
     },
     uploadPhotos(plantId) {
       let formData = new FormData();
-      
-      this.plant.photos.forEach((photo) => {
+
+      this.plant.photos.forEach(photo => {
         formData.append('photos', photo);
       });
-      
+
       formData.append('plantId', plantId);
-      
-      this.axios.post('http://localhost:3000/api/plant/photos', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }).then((response) => {
-        console.log(response);
-        this.handleSuccess();
-      });
+
+      this.axios
+        .post('http://localhost:3000/api/plant/photos', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(response => {
+          console.log(response);
+          this.handleSuccess();
+        });
     },
     handleSuccess() {
-this.notify('Plant Created!');
-          this.$eventHub.$emit('plant-list-updated');
-          this.close();
-    }
+      this.notify('Plant Created!');
+      this.$eventHub.$emit('plant-list-updated');
+      this.close();
+    },
   },
   mounted() {},
 };

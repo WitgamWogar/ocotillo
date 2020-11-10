@@ -3,7 +3,10 @@
 /node_modules
 
 #Generated Data
-/uploads
+/public/uploads
+
+#Configurations
+ormconfig.json
 
 # Logs
 logs

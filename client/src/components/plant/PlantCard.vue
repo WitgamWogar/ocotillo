@@ -2,7 +2,7 @@
   <v-card width="400">
     <v-img
       height="200px"
-      src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
+      :src="getImage()"
     >
       <v-app-bar flat color="#4CAF5078" dense>
         <v-toolbar-title class="title white--text pl-0">
@@ -64,6 +64,16 @@ export default {
           this.notify("Plant Deleted!");
       });
     },
+    getImage() {
+      let url = "https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg";
+      
+      if (this.plant.photos && this.plant.photos.length) {
+        // TODO use config for host
+        url = 'http://localhost:3000/' + this.plant.photos[this.plant.photos.length - 1].path;          
+      }
+      
+      return url;
+    }
   }
 };
 </script>

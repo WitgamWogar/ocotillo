@@ -8,6 +8,7 @@ import {
   Put,
   Query,
   NotFoundException,
+  ClassSerializerInterceptor,
   Delete,
   UploadedFiles,
   UseInterceptors,
@@ -25,19 +26,21 @@ export class PlantController {
 
   // add a plant
   @Post()
-  async addPlant(@Res() res, @Body() createPlantDTO: CreatePlantDTO) {
+  async addPlant(@Body() createPlantDTO: CreatePlantDTO) {
     const plant = await this.plantService.addPlant(createPlantDTO);
-    return res.status(HttpStatus.OK).json({
-      message: 'Plant has been created successfully',
-      plant,
-    });
+    
+    return {
+      status: HttpStatus.OK,
+      message: 'Plant created successfully!',
+      data: plant,
+    };
   }
 
   @Post('photos')
   @UseInterceptors(
     FilesInterceptor('photos', 10, {
       storage: diskStorage({
-        destination: './uploads/plants',
+        destination: './public/uploads/plants',
         filename: generateFilename,
       }),
       fileFilter: imageFileFilter,
@@ -63,18 +66,25 @@ export class PlantController {
   }
 
   // Retrieve plants list
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  async getAllPlants(@Res() res) {
+  async getAllPlants() {
     const plants = await this.plantService.getAllPlants();
-    return res.status(HttpStatus.OK).json(plants);
+    return {
+      status: HttpStatus.OK,
+      data: plants,
+    };
   }
 
   // Fetch a particular plant using ID
   @Get(':plantID')
-  async getPlant(@Res() res, @Param('plantId') plantId) {
+  async getPlant(@Param('plantId') plantId) {
     const plant = await this.plantService.getPlant(plantId);
     if (!plant) throw new NotFoundException('Plant does not exist!');
-    return res.status(HttpStatus.OK).json(plant);
+    return {
+      status: HttpStatus.OK,
+      data: plant,
+    };
   }
 
   // Update a plant's details
@@ -95,9 +105,10 @@ export class PlantController {
     console.log(plantId);
     const plant = await this.plantService.deletePlant(plantId);
     if (!plant) throw new NotFoundException('Plant does not exist');
-    return res.status(HttpStatus.OK).json({
-      message: 'Plant has been deleted',
-      plant,
-    });
+    return {
+      status: HttpStatus.OK,
+      message: 'Plant has been deleted!',
+      data: plant,
+    };
   }
 }

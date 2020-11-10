@@ -1,22 +1,29 @@
-import { Module } from '@nestjs/common';
+import { Module, ClassSerializerInterceptor } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ServeStaticModule} from '@nestjs/serve-static';
-import { MongooseModule } from '@nestjs/mongoose';
-import { join } from 'path';
-import { PlantModule } from './plant/plant.module';
-import { PhotoModule } from './photo/photo.module';
+// import { ServeStaticModule } from '@nestjs/serve-static/dist/serve-static.module';
+// import { join } from 'path';
+import { PlantModule } from './plants/plant.module';
+import { PhotoModule } from './photos/photo.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client/dist'),
-    }),
-    MongooseModule.forRoot('mongodb://localhost/nest'),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'public'),
+    // }),
+    TypeOrmModule.forRoot(),
     PlantModule,
     PhotoModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor
+    }
+  ],
 })
 export class AppModule {}

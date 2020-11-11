@@ -6,6 +6,7 @@ import NetworkBus from './plugins/NetworkBus';
 import initInterceptors from "./plugins/interceptors";
 import axios from 'axios';
 import VuetifyConfirm from 'vuetify-confirm';
+import router from './routes';
 
 Vue.config.productionTip = false;
 
@@ -41,6 +42,7 @@ Vue.mixin({
 
 
 let app = new Vue({
+  router: router,
   vuetify,
   render: h => h(App)
 }).$mount('#app')

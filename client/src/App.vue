@@ -2,8 +2,9 @@
   <v-app>
     <TopBar/>
 
+
     <v-main>
-      <CollectionPage/>
+      <router-view></router-view>
     </v-main>
 
     <Notification/>
@@ -13,7 +14,6 @@
 
 <script>
 import TopBar from './components/ui/TopBar';
-import CollectionPage from './pages/CollectionPage';
 import Notification from './components/ui/Notification';
 
 export default {
@@ -21,7 +21,6 @@ export default {
 
   components: {
     TopBar,
-    CollectionPage,
     Notification,
   },
 };

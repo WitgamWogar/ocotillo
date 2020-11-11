@@ -5,28 +5,7 @@
         <h1 class="white--text">{{ this.plant.common_name }}</h1>
       </v-row>
       <v-row justify="center">
-        <v-col cols="6">
-          <v-card class="mb-3">
-            <v-card-title>
-              <v-icon class="mr-3">mdi-photo</v-icon>
-              <span class="headline">Photos</span>
-              <v-spacer></v-spacer>
-              <v-btn color="green" class="ml-2" icon small>
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-            </v-card-title>
-            <v-carousel v-if="plant.photos && plant.photos.length">
-              <v-carousel-item
-                v-for="(photo, i) in plant.photos"
-                :key="i"
-                :src="'http://localhost:3000/' + photo.path"
-                reverse-transition="fade-transition"
-                transition="fade-transition"
-              ></v-carousel-item>
-            </v-carousel>
-          </v-card>
-        </v-col>
-
+      
         <v-col cols="6">
           <v-card class="mb-3">
             <v-card-title>
@@ -80,6 +59,29 @@
             <v-card-actions> </v-card-actions>
           </v-card>
 
+          <v-card class="mb-3">
+            <v-card-title>
+              <v-icon class="mr-3">mdi-photo</v-icon>
+              <span class="headline">Photos</span>
+              <v-spacer></v-spacer>
+              <v-btn color="green" class="ml-2" icon small>
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-carousel v-if="plant.photos && plant.photos.length">
+              <v-carousel-item
+                v-for="(photo, i) in plant.photos"
+                :key="i"
+                :src="'http://localhost:3000/' + photo.path"
+                reverse-transition="fade-transition"
+                transition="fade-transition"
+              ></v-carousel-item>
+            </v-carousel>
+          </v-card>
+
+          
+        </v-col>
+        <v-col cols="6">
           <v-card>
             
             <v-card-title>

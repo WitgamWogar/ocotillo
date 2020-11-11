@@ -33,7 +33,7 @@
           <v-btn fab dark small color="green">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
-          <v-btn fab dark small color="indigo">
+          <v-btn fab dark small color="indigo" @click="$router.push({ name: 'plant.details', params: { plantId: plant.id } })">
             <v-icon>mdi-eye</v-icon>
           </v-btn>
           <v-btn fab dark small color="red" @click="deletePlant">
@@ -59,7 +59,6 @@ export default {
   }),
   methods: {
     deletePlant() {
-      //TODO add confirmation
       this.$confirm(
         `Are you sure want to delete this plant (${this.plant.common_name})?`,
       ).then(confirmed => {
@@ -76,7 +75,7 @@ export default {
         'https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg';
 
       if (this.plant.photos && this.plant.photos.length) {
-        // TODO use config for host
+        // TODO use config for host or include a url property via transformer on backend
         url =
           'http://localhost:3000/' +
           this.plant.photos[this.plant.photos.length - 1].path;

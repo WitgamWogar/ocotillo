@@ -23,7 +23,10 @@ export class PlantService {
 
   // Get a single plant
   async getPlant(plantId): Promise<Plant> {
-    const plant = await this.plantsRepository.findOne(plantId);
+    const plant = await this.plantsRepository.findOne(plantId, {
+      relations: ['photos'],
+    });
+    
     return plant;
   }
 

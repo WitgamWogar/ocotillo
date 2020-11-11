@@ -25,3 +25,13 @@ export default {
   },
 };
 </script>
+
+<style>
+  /* TODO I don't know how I feel about this... revist. */
+  #app {
+    background: rgba(0, 0, 0, 0) url("https://www.toptal.com/designers/subtlepatterns/patterns/skulls.png") repeat scroll 0% 0%;
+  }
+  .v-main__wrap {
+    background-color:#0000007a!important;
+  }
+</style>

@@ -1,11 +1,11 @@
 <template>
-  <v-app-bar app color="#379338" dark>
+  <v-app-bar app color="rgb(9, 9, 9)" dark>
     <div class="d-flex align-center">
       <v-img
         alt="Vuetify Logo"
         class="shrink mr-2"
         contain
-        src="../../assets/ocotillo-icon.png"
+        src="../../assets/nhsd_ocotillo.png"
         transition="scale-transition"
         width="40"
       />

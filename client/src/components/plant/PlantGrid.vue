@@ -22,7 +22,6 @@ export default {
   }),
   methods: {
     getPlants() {
-      // TODO set host const
       this.axios.get(`plant`).then((response) => {
         this.plants = response.data.data;
       });

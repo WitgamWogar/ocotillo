@@ -77,7 +77,7 @@ export class PlantController {
   }
 
   // Fetch a particular plant using ID
-  @Get(':plantID')
+  @Get(':plantId')
   async getPlant(@Param('plantId') plantId) {
     const plant = await this.plantService.getPlant(plantId);
     if (!plant) throw new NotFoundException('Plant does not exist!');

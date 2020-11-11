@@ -5,10 +5,23 @@ import Validator from "./plugins/Validator";
 import NetworkBus from './plugins/NetworkBus';
 import initInterceptors from "./plugins/interceptors";
 import axios from 'axios';
+import VuetifyConfirm from 'vuetify-confirm';
 
 Vue.config.productionTip = false;
 
 Vue.prototype.$eventHub = new Vue(); // Global event bus
+
+Vue.use(VuetifyConfirm, {
+  vuetify,
+  buttonTrueText: 'Confirm',
+  buttonFalseText: 'Cancel',
+  color: 'warning',
+  icon: 'mdi-help-circle-outline',
+  title: 'Confirm',
+  width: 350,
+  property: '$confirm'
+});
+
 
 Vue.prototype.$validator = new Vue(Validator);
 Vue.prototype.$network = new Vue(NetworkBus);

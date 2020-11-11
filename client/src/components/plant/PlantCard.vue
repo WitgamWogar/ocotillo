@@ -1,9 +1,6 @@
 <template>
   <v-card width="400">
-    <v-img
-      height="200px"
-      :src="getImage()"
-    >
+    <v-img height="200px" :src="getImage()">
       <v-app-bar flat color="rgba(0, 0, 0, 0.57)" dense>
         <v-toolbar-title class="title white--text pl-0">
           {{ plant.common_name }}
@@ -18,7 +15,13 @@
           transition="slide-x-reverse-transition"
         >
           <template v-slot:activator>
-            <v-btn v-model="actionBtn" color="white" class="elevation-0" dark text>
+            <v-btn
+              v-model="actionBtn"
+              color="white"
+              class="elevation-0"
+              dark
+              text
+            >
               <v-icon v-if="actionBtn">
                 mdi-close
               </v-icon>
@@ -57,23 +60,30 @@ export default {
   methods: {
     deletePlant() {
       //TODO add confirmation
-      this.axios.delete(`plant`, {params:{
-        plantId: this.plant._id
-        }}).then(() => {
-          this.$eventHub.$emit('plant-list-updated');
-          this.notify("Plant Deleted!");
+      this.$confirm(
+        `Are you sure want to delete this plant (${this.plant.common_name})?`,
+      ).then(confirmed => {
+        if (confirmed) {
+          this.axios.delete(`plant/${this.plant.id}`).then(() => {
+            this.$eventHub.$emit('plant-list-updated');
+            this.notify('Plant Deleted!');
+          });
+        }
       });
     },
     getImage() {
-      let url = "https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg";
-      
+      let url =
+        'https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg';
+
       if (this.plant.photos && this.plant.photos.length) {
         // TODO use config for host
-        url = 'http://localhost:3000/' + this.plant.photos[this.plant.photos.length - 1].path;          
+        url =
+          'http://localhost:3000/' +
+          this.plant.photos[this.plant.photos.length - 1].path;
       }
-      
+
       return url;
-    }
-  }
+    },
+  },
 };
 </script>

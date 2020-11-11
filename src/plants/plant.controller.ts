@@ -99,12 +99,12 @@ export class PlantController {
   // }
 
   // Delete a plant
-  @Delete()
-  async deletePlant(@Res() res, @Query('plantId') plantId) {
-    //TODO Model injection possible with nest.js?
-    console.log(plantId);
+  @Delete(':id')
+  async deletePlant(@Param('id') plantId) {
     const plant = await this.plantService.deletePlant(plantId);
+    
     if (!plant) throw new NotFoundException('Plant does not exist');
+    
     return {
       status: HttpStatus.OK,
       message: 'Plant has been deleted!',

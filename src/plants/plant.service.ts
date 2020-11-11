@@ -50,8 +50,11 @@ export class PlantService {
   // }
 
   // Delete a plant
-  async deletePlant(plantID): Promise<any> {
-    const deletedPlant = await this.plantsRepository.delete(plantID);
+  async deletePlant(plantId): Promise<any> {
+    const deletedPlant = await this.plantsRepository.delete({
+      id: plantId,
+    });
+    
     return deletedPlant;
   }
 }

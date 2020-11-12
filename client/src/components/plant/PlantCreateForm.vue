@@ -145,16 +145,13 @@ export default {
       this.$emit('close');
     },
     store() {
-      // TODO set host const
-      this.axios
-        .post(`plant`, this.plant)
-        .then(response => {
-          if (this.plant.photos.length) {
-            this.uploadPhotos(response.data.data.id);
-          } else {
-            this.handleSuccess();
-          }
-        });
+      this.axios.post(`plant`, this.plant).then(response => {
+        if (this.plant.photos.length) {
+          this.uploadPhotos(response.data.data.id);
+        } else {
+          this.handleSuccess();
+        }
+      });
     },
     uploadPhotos(plantId) {
       let formData = new FormData();

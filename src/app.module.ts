@@ -1,21 +1,26 @@
 import { Module, ClassSerializerInterceptor } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { ServeStaticModule } from '@nestjs/serve-static/dist/serve-static.module';
-// import { join } from 'path';
 import { PlantModule } from './plants/plant.module';
 import { PhotoModule } from './photos/photo.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './users/user.module';
+import { ConfigModule } from '@nestjs/config';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', 'public'),
-    // }),
     TypeOrmModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+    }),
     PlantModule,
     PhotoModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [

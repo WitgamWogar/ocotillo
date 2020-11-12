@@ -1,13 +1,12 @@
 <template>
-  <div>
+  <div id="plant-details-container" class="page-wrapper">
     <v-container v-if="!notFound">
       <v-row justify="center">
         <h1 class="white--text">{{ this.plant.common_name }}</h1>
       </v-row>
       <v-row justify="center">
-      
         <v-col cols="6">
-          <v-card class="mb-3">
+          <v-card class="mb-3" color="#ffffffd4">
             <v-card-title>
               <v-icon class="mr-3">mdi-flower-tulip-outline</v-icon>
               <span class="headline">Basic Details</span>
@@ -16,7 +15,7 @@
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
             </v-card-title>
-            <v-simple-table>
+            <v-simple-table style="background-color:transparent;">
               <tbody>
                 <editable-row
                   label="Scientific Name"
@@ -59,7 +58,7 @@
             <v-card-actions> </v-card-actions>
           </v-card>
 
-          <v-card class="mb-3">
+          <v-card class="mb-3" color="#ffffffd4">
             <v-card-title>
               <v-icon class="mr-3">mdi-photo</v-icon>
               <span class="headline">Photos</span>
@@ -78,16 +77,13 @@
               ></v-carousel-item>
             </v-carousel>
           </v-card>
-
-          
         </v-col>
         <v-col cols="6">
-          <v-card>
-            
+          <v-card color="#ffffffd4">
             <v-card-title>
               Activity
               <v-select
-              class="ml-15"
+                class="ml-15"
                 :items="activityTypes"
                 label="Filter Activities"
               ></v-select>
@@ -95,21 +91,12 @@
             <v-divider></v-divider>
             <v-card-text class="px-4" style="position:relative">
               <v-fab-transition>
-                <v-btn
-                  color="green"
-                  fab
-                  dark
-                  small
-                  absolute
-                  top
-                  right
-                >
+                <v-btn color="green" fab dark small absolute top right>
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </v-fab-transition>
-              
+
               <v-timeline dense clipped class="pt-0">
-                
                 <v-timeline-item
                   :color="item.color"
                   :icon="item.icon"
@@ -239,3 +226,9 @@ export default {
   },
 };
 </script>
+
+<style>
+#plant-details-container {
+  background-image: url('../../assets/plants-background.jpeg');
+}
+</style>

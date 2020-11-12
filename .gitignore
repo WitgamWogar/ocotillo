@@ -7,6 +7,7 @@
 
 #Configurations
 ormconfig.json
+.env
 
 # Logs
 logs

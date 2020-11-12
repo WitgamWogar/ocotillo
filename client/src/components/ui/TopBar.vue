@@ -1,18 +1,19 @@
 <template>
   <v-app-bar app color="rgb(9, 9, 9)" dark>
-    <div class="d-flex align-center">
+    <div class="d-flex align-center" @click="$router.push('/')" style="cursor:pointer;">
       <v-img
         alt="Vuetify Logo"
         class="shrink mr-2"
         contain
-        src="../../assets/nhsd_ocotillo.png"
+        src="../../assets/logo2.png"
         transition="scale-transition"
         width="40"
       />
-      <h1>Ocotillo</h1>
+      <h1 class="flower-font">Ocotillo</h1>
     </div>
 
-    <v-tabs centered class="ml-n15">
+    <!-- TODO get this centered properly in navbar -->
+    <v-tabs centered>
       <v-tab v-for="link in links" :key="link">
         {{ link }}
       </v-tab>

@@ -1,24 +1,23 @@
 import {
   Controller,
   Get,
-  Res,
   HttpStatus,
   Post,
   Body,
-  Put,
-  Query,
   NotFoundException,
   ClassSerializerInterceptor,
   Delete,
   UploadedFiles,
   UseInterceptors,
   Param,
+  UseGuards,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PlantService } from './plant.service';
 import { CreatePlantDTO } from './dto/create-plant.dto';
 import { diskStorage } from 'multer';
 import { generateFilename, imageFileFilter } from '../utils/file-upload';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('plant')
 export class PlantController {
@@ -67,6 +66,7 @@ export class PlantController {
 
   // Retrieve plants list
   @UseInterceptors(ClassSerializerInterceptor)
+  // @UseGuards(JwtAuthGuard) //TODO implement
   @Get()
   async getAllPlants() {
     const plants = await this.plantService.getAllPlants();

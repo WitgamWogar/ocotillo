@@ -1,7 +1,7 @@
 <template>
   <v-card width="400">
     <v-img height="200px" :src="getImage()">
-      <v-app-bar flat color="rgba(0, 0, 0, 0.57)" dense>
+      <v-app-bar flat color="rgba(2, 49, 0, 0.85)" dense>
         <v-toolbar-title class="title white--text pl-0">
           {{ plant.common_name }}
         </v-toolbar-title>

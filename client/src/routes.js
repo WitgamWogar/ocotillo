@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import CollectionPage from './pages/CollectionPage'
-import WishlistPage from './pages/WishlistPage'
-import PlantDetailsPage from './pages/PlantDetailsPage'
+import CollectionPage from './pages/CollectionPage';
+import WishlistPage from './pages/WishlistPage';
+import PlantDetailsPage from './pages/PlantDetailsPage';
+import LoginPage from './pages/LoginPage';
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,15 @@ const router = new VueRouter({
             props: false,
             meta: {
                 title: 'Plant Details',
+            },
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: LoginPage,
+            props: false,
+            meta: {
+                title: 'Login',
             },
         },
     ]

@@ -27,11 +27,12 @@ export default {
 </script>
 
 <style>
-  /* TODO I don't know how I feel about this... revist. */
-  #app {
-    background: rgba(0, 0, 0, 0) url("https://www.toptal.com/designers/subtlepatterns/patterns/skulls.png") repeat scroll 0% 0%;
+  @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+  .flower-font {
+    font-family: 'Indie Flower', cursive;
   }
-  .v-main__wrap {
-    background-color:#0000007a!important;
+  .page-wrapper {
+    min-height: 100%;
+    background-size: cover;
   }
 </style>

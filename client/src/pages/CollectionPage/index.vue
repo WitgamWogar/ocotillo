@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="collection-container" class="page-wrapper">
     <v-row justify="center">
       <v-btn color="success" dark @click="newPlantDialog = true" class="mt-5">
         Add New Plant
@@ -31,3 +31,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#collection-container {
+  background-image: url('../../assets/collection-background.jpeg');
+}
+</style>

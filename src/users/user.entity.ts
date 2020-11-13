@@ -1,6 +1,7 @@
 
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, BeforeInsert } from 'typeorm';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
+import { Exclude } from 'class-transformer';
 
 @Entity({name: "users"}) //otherwise "user" is used
 export class User {
@@ -17,10 +18,11 @@ export class User {
   email: string;
 
   @Column()
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @BeforeInsert()
    async hashPassword() {
-      this.password = await bcrypt.hash(this.password, Number(process.env.HASH_SALT));
+      this.password = await bcrypt.hash(this.password, 10);
    }
 }

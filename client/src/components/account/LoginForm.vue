@@ -4,7 +4,7 @@
       >These credentials don't match our records.</v-alert>
     <v-text-field
       label="Email Address"
-      v-model="user.email"
+      v-model="user.username"
       dark
       ref="emailField"
       :error="loginError"
@@ -47,7 +47,7 @@ export default {
       showPass: false,
       loginError: false,
       user: {
-        email: '',
+        username: '',
         password: '',
       },
     };

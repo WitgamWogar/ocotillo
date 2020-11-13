@@ -14,8 +14,7 @@ export class Photo {
 
   @Column()
   path: string;
-
-  //Doesnt work
+  
   @ManyToOne(
     type => Plant,
     plant => plant.photos,
@@ -24,8 +23,8 @@ export class Photo {
   plant: Plant;
 
   @Column()
-  plant_id: number; 
+  plant_id: number;
 
-  @Column({ default: Date.now })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 }

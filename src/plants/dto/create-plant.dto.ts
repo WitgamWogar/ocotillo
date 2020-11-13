@@ -1,5 +1,4 @@
-import { Exclude, Expose } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsIn, IsDate, IsDateString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsIn, IsDateString } from 'class-validator';
 
 export class CreatePlantDTO {
   @IsNotEmpty()
@@ -17,11 +16,14 @@ export class CreatePlantDTO {
   @IsNotEmpty()
   location: string;
 
+  @IsIn(['collection', 'wishlist'])
+  type: string;
+
   @IsIn(['Purchase', 'Purchased Seed', 'Wild Seed', 'Harvested Seed', 'Clone'])
   @IsNotEmpty()
   source: string;
 
-  photos: [];
+  user_id: number;  
 
-  readonly created_at: Date;
+  photos: [];
 }

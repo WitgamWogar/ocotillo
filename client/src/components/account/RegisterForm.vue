@@ -41,6 +41,7 @@
           label="Password"
           color="rgb(11, 95, 75)"
           v-model="user.password"
+          type="password"
           dark
           outlined
           required
@@ -51,6 +52,7 @@
           label="Confirm Password"
           color="rgb(11, 95, 75)"
           v-model="user.password_confirmation"
+          type="password"
           dark
           outlined
           required
@@ -82,9 +84,9 @@ export default {
     };
   },
   methods: {
-    login() {
+    register() {
       this.axios
-        .post(`auth/register`, this.user)
+        .post(`user/register`, this.user)
         .then(response => {
           console.log(response, response.code);
         })

@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   Param,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PlantService } from './plant.service';
@@ -25,7 +26,9 @@ export class PlantController {
 
   // add a plant
   @Post()
-  async addPlant(@Body() createPlantDTO: CreatePlantDTO) {
+  @UseGuards(JwtAuthGuard)
+  async addPlant(@Request() req, @Body() createPlantDTO: CreatePlantDTO) {
+    createPlantDTO.user_id = req.user.userId;
     const plant = await this.plantService.addPlant(createPlantDTO);
     
     return {
@@ -68,8 +71,9 @@ export class PlantController {
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAllPlants() {
-    const plants = await this.plantService.getAllPlants();
+  async getAllPlants(@Request() req) {
+    const plants = await this.plantService.getUserPlants(req.user.userId);
+    
     return {
       status: HttpStatus.OK,
       data: plants,

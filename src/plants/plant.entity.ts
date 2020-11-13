@@ -1,6 +1,7 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 import { Photo } from '../photos/photo.entity';
+import { User } from '../users/user.entity';
 
 @Entity({name: "plants"}) //otherwise "plant" is used
 export class Plant {
@@ -13,7 +14,7 @@ export class Plant {
   @Column()
   common_name: string;
 
-  @Column()
+  @Column({ nullable: false })
   nickname: string;
 
   @Column()
@@ -25,9 +26,22 @@ export class Plant {
   @Column()
   location: string;
 
+  @Column({default: 'collection'})
+  type: string;
+
+  @ManyToOne(
+    type => User,
+    user => user.plants,
+  )
+  @JoinColumn({ name: "user_id" }) //Otherwise it will try to do "plantId"
+  user: User;
+
+  @Column()
+  user_id: number;
+
   @OneToMany(type => Photo, photo => photo.plant)
   photos: Photo[];
 
-  @Column({default: Date.now })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
   created_at: Date;
 }

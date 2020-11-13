@@ -20,6 +20,4 @@ export class CreateUserDTO {
   @MinLength(6)
   //TODO create a custom validation decorator to enforce confirmation
   password_confirmation: string;
-
-  readonly created_at: Date;
 }

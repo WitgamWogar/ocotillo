@@ -1,9 +1,9 @@
 <template>
   <center>
-    <h1>
+    <h1 class="pt-15">
         {{ message || 'Page not found [404]' }}
     </h1>
-        <v-btn color="success" dark class="mt-5">
+        <v-btn color="success" dark class="mt-5" @click="$router.push('/')">
             Collections Page
         </v-btn>
   </center>
@@ -20,13 +20,8 @@
 </script>
 
 <style scoped>
-
-  center {
-    margin: 15vw;
-  }
-
   h1 {
-    color: var(--border);
+    color: white;
     font-size: 2em;
   }
 

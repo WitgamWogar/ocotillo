@@ -1,9 +1,15 @@
-
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  BeforeInsert,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
+import { Plant } from '../plants/plant.entity';
 
-@Entity({name: "users"}) //otherwise "user" is used
+@Entity({ name: 'users' }) //otherwise "user" is used
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -22,7 +28,13 @@ export class User {
   password: string;
 
   @BeforeInsert()
-   async hashPassword() {
-      this.password = await bcrypt.hash(this.password, 10);
-   }
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  @OneToMany(type => Plant, plant => plant.user)
+  plants: Plant[];
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
 }

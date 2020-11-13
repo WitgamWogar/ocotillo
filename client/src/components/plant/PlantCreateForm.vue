@@ -129,6 +129,7 @@ export default {
         acquired_at: new Date().toISOString(),
         source: '',
         location: '',
+        type: '',
         photos: [],
       },
       busy: false,
@@ -145,6 +146,8 @@ export default {
       this.$emit('close');
     },
     store() {
+      this.plant.type = this.$route.name;
+
       this.axios.post(`plant`, this.plant).then(response => {
         if (this.plant.photos.length) {
           this.uploadPhotos(response.data.data.id);

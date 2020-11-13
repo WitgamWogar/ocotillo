@@ -19,5 +19,4 @@ export class UserController {
   async getCurrentUser(@Request() req) {
     return req.user;
   }
-
 }

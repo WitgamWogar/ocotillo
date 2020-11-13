@@ -45,6 +45,7 @@ export default {
 <style scoped>
 .logo-container {
   cursor: pointer;
+  z-index:1;
   position: absolute;
 }
 </style>

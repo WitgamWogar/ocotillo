@@ -41,3 +41,18 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+### Project Tasks
+
+- [ ] Auth System
+- [ ] Plant Details Page
+- [ ] Location Management
+- [ ] Edit Plants
+- [ ] Activity Scheduling System
+- [ ] Activity Entries & Timelines
+- [ ] Wishlist System / Page
+- [ ] Propagation System / Page
+- [ ] Add Notes Field to Plants
+- [ ] Ability to Select Cover Image for Plants
+- [ ] Fix created_at Columns
+- [ ] Optimize Images

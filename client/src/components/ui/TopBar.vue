@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app color="rgb(9, 9, 9)" dark>
-    <div class="d-flex align-center" @click="$router.push('/')" style="cursor:pointer;">
+    <div class="d-flex align-center logo-container" @click="$router.push('/')">
       <v-img
         alt="Vuetify Logo"
         class="shrink mr-2"
@@ -11,8 +11,6 @@
       />
       <h1 class="flower-font">Ocotillo</h1>
     </div>
-
-    <!-- TODO get this centered properly in navbar -->
     <v-tabs centered>
       <v-tab v-for="link in links" :key="link">
         {{ link }}
@@ -35,3 +33,10 @@
     }),
   }
 </script>
+
+<style scoped>
+.logo-container {
+  cursor: pointer;
+  position: absolute;
+}
+</style>

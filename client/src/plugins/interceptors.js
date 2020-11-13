@@ -5,6 +5,8 @@ import util from './util';
 export default function setup() {
     // Request Interception
     axios.interceptors.request.use(config => {
+        config.headers.common['Authorization'] = `Bearer ${app.$store.getters['auth/access_token']}`;
+
         app.$network.busy = true;
         if (!config.params) {
             config.params = {};

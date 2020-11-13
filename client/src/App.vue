@@ -1,14 +1,12 @@
 <template>
   <v-app>
-    <TopBar/>
-
+    <TopBar />
 
     <v-main>
       <router-view></router-view>
     </v-main>
 
-    <Notification/>
-
+    <Notification />
   </v-app>
 </template>
 
@@ -23,16 +21,22 @@ export default {
     TopBar,
     Notification,
   },
+
+  mounted() {
+    this.axios.get(`/user/current`).then(response => {
+      this.$store.commit('auth/setUser', response.data)
+    });
+  },
 };
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
-  .flower-font {
-    font-family: 'Indie Flower', cursive;
-  }
-  .page-wrapper {
-    min-height: 100%;
-    background-size: cover;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+.flower-font {
+  font-family: 'Indie Flower', cursive;
+}
+.page-wrapper {
+  min-height: 100%;
+  background-size: cover;
+}
 </style>

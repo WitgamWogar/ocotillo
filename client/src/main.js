@@ -7,6 +7,8 @@ import initInterceptors from "./plugins/interceptors";
 import axios from 'axios';
 import VuetifyConfirm from 'vuetify-confirm';
 import router from './routes';
+import Vuex from 'vuex';
+import store from './store';
 
 Vue.config.productionTip = false;
 
@@ -29,6 +31,8 @@ Vue.prototype.$network = new Vue(NetworkBus);
 Vue.prototype.axios = axios;
 axios.defaults.baseURL = 'http://localhost:3000/api/'; // TODO add switch for prod vs dev
 
+Vue.use(Vuex);
+
 initInterceptors();
 
 Vue.mixin({
@@ -44,6 +48,7 @@ Vue.mixin({
 let app = new Vue({
   router: router,
   vuetify,
+  store,
   render: h => h(App)
 }).$mount('#app')
 

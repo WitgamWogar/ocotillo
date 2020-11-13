@@ -66,7 +66,7 @@ export class PlantController {
 
   // Retrieve plants list
   @UseInterceptors(ClassSerializerInterceptor)
-  // @UseGuards(JwtAuthGuard) //TODO implement
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getAllPlants() {
     const plants = await this.plantService.getAllPlants();

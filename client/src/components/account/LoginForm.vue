@@ -1,7 +1,8 @@
 <template>
   <v-form ref="form" @keyup.native.enter="login">
     <v-alert v-if="loginError" dense type="error"
-      >These credentials don't match our records.</v-alert>
+      >These credentials don't match our records.</v-alert
+    >
     <v-text-field
       label="Email Address"
       v-model="user.username"
@@ -35,7 +36,6 @@
         @click="login"
         >Login</v-btn
       >
-      
     </v-layout>
   </v-form>
 </template>
@@ -58,7 +58,8 @@ export default {
       this.axios
         .post(`auth/login`, this.user)
         .then(response => {
-          console.log(response, response.code);
+          this.$store.commit('auth/setAccessToken', response.data.access_token);
+          this.$store.commit('auth/setUser', response.data.user);
         })
         .catch(() => {
           //TODO make this more robust handling all types of errors

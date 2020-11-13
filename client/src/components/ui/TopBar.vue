@@ -18,6 +18,7 @@
     </v-tabs>
 
     <v-spacer></v-spacer>
+    <span class="overline" style="position:absolute; right:20px;">{{ $store.state.auth.user.email }}</span>
   </v-app-bar>
 </template>
 

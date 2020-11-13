@@ -44,15 +44,22 @@ $ npm run test:cov
 
 ### Project Tasks
 
-- [ ] Auth System
-- [ ] Plant Details Page
-- [ ] Location Management
-- [ ] Edit Plants
-- [ ] Activity Scheduling System
-- [ ] Activity Entries & Timelines
-- [ ] Wishlist System / Page
-- [ ] Propagation System / Page
-- [ ] Add Notes Field to Plants
-- [ ] Ability to Select Cover Image for Plants
-- [ ] Fix created_at Columns
-- [ ] Optimize Images
+* [ ] Auth System
+    - [ ] Refresh Tokens
+    - [ ] Double Check Everything
+* [ ] Optimize Images
+* [ ] Plant Details Page
+* [ ] Attach All Relative Models to User
+* [ ] Location Management
+    - [ ] Locations Page
+    - [ ] Assign Plants to Location
+    - [ ] Filter Plants by Location
+* [ ] Edit Plants
+* [ ] Activity Scheduling System
+* [ ] Activity Entries & Timelines
+* [ ] Wishlist System / Page
+* [ ] Propagation System / Page
+* [ ] Add Notes Field to Plants
+* [ ] Ability to Select Cover Image for Plants
+* [ ] Fix created_at Columns
+* [ ] Address All TODO Items

@@ -54,9 +54,12 @@ export default {
       registerMode: false,
     };
   },
-  computed: {},
-  watch: {},
-  methods: {},
+  mounted() {
+    // Redirect if authenticated
+    if (this.$store.state.auth.access_token) {
+      this.$router.push('/');
+    }
+  }
 };
 </script>
 

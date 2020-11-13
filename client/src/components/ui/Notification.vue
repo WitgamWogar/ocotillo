@@ -29,7 +29,7 @@ export default {
       _this.color = color;
       _this.message = msg;
       _this.active = true;
-      _this.active = allowClose;
+      _this.allowClose = allowClose;
     });
   },
 };

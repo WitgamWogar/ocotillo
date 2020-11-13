@@ -23,9 +23,13 @@ export default {
   },
 
   mounted() {
-    this.axios.get(`/user/current`).then(response => {
-      this.$store.commit('auth/setUser', response.data)
-    });
+    if (this.$store.state.auth.access_token) {
+      this.axios.get(`/user/current`).then(response => {
+        this.$store.commit('auth/setUser', response.data);
+      });
+    } else if (this.$route.name !== 'login') {
+      this.$router.push('/login');
+    }
   },
 };
 </script>

@@ -63,3 +63,4 @@ $ npm run test:cov
 * [ ] Ability to Select Cover Image for Plants
 * [ ] Fix created_at Columns
 * [ ] Address All TODO Items
+* [ ] Shared Collection on Web

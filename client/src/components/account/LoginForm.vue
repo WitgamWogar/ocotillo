@@ -60,6 +60,8 @@ export default {
         .then(response => {
           this.$store.commit('auth/setAccessToken', response.data.access_token);
           this.$store.commit('auth/setUser', response.data.user);
+          this.$router.push('/');
+          this.notify(`Welcome back ${response.data.user.first_name}`);
         })
         .catch(() => {
           //TODO make this more robust handling all types of errors

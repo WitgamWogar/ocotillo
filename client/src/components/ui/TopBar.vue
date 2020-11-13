@@ -18,21 +18,28 @@
     </v-tabs>
 
     <v-spacer></v-spacer>
-    <span class="overline" style="position:absolute; right:20px;">{{ $store.state.auth.user.email }}</span>
+    <div
+      v-if="$store.state.auth.access_token"
+      style="position:absolute; right:20px;"
+    >
+      <span class="overline">{{ $store.state.auth.user.email }}</span>
+      <v-btn text @click="logout">Logout</v-btn>
+    </div>
   </v-app-bar>
 </template>
 
-
 <script>
-  export default {
-    data: () => ({
-      links: [
-        'Collection',
-        'Wishlist',
-        'Propagation',
-      ],
-    }),
-  }
+export default {
+  data: () => ({
+    links: ['Collection', 'Wishlist', 'Propagation'],
+  }),
+  methods: {
+    logout() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
+    },
+  },
+};
 </script>
 
 <style scoped>

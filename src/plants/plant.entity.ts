@@ -2,6 +2,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 import { Photo } from '../photos/photo.entity';
 import { User } from '../users/user.entity';
+import { Activity } from '../activities/entities/activity.entity';
 
 @Entity({name: "plants"}) //otherwise "plant" is used
 export class Plant {
@@ -41,6 +42,9 @@ export class Plant {
 
   @OneToMany(type => Photo, photo => photo.plant)
   photos: Photo[];
+
+  @OneToMany(type => Activity, activity => activity.plant)
+  activities: Photo[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
   created_at: Date;

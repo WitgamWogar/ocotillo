@@ -9,6 +9,7 @@ import VuetifyConfirm from 'vuetify-confirm';
 import router from './routes';
 import Vuex from 'vuex';
 import store from './store';
+import moment from 'moment';
 
 Vue.config.productionTip = false;
 
@@ -41,6 +42,11 @@ Vue.mixin({
           this.$eventHub.$emit('show-notification', message, color, timeout);
       },
   },
+  filters: {
+    moment: function (date) {
+      return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    }
+  }
 });
 
 

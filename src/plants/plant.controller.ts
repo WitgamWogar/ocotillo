@@ -27,7 +27,7 @@ export class PlantController {
   // add a plant
   @Post()
   @UseGuards(JwtAuthGuard)
-  async addPlant(@Request() req, @Body() createPlantDTO: CreatePlantDTO) {
+  async create(@Request() req, @Body() createPlantDTO: CreatePlantDTO) {
     createPlantDTO.user_id = req.user.userId;
     const plant = await this.plantService.addPlant(createPlantDTO);
     
@@ -71,7 +71,7 @@ export class PlantController {
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAllPlants(@Request() req) {
+  async findAll(@Request() req) {
     const plants = await this.plantService.getUserPlants(req.user.userId);
     
     return {
@@ -82,7 +82,7 @@ export class PlantController {
 
   // Fetch a particular plant using ID
   @Get(':plantId')
-  async getPlant(@Param('plantId') plantId) {
+  async find(@Param('plantId') plantId) {
     const plant = await this.plantService.getPlant(plantId);
     if (!plant) throw new NotFoundException('Plant does not exist!');
     return {
@@ -93,7 +93,7 @@ export class PlantController {
 
   // Update a plant's details
   // @Put()
-  // async updatePlant(@Res() res, @Query('plantID') plantID, @Body() createPlantDTO: CreatePlantDTO) {
+  // async update(@Res() res, @Query('plantID') plantID, @Body() createPlantDTO: CreatePlantDTO) {
   //     const plant = await this.plantService.updatePlant(plantID, createPlantDTO);
   //     if (!plant) throw new NotFoundException('Plant does not exist!');
   //     return res.status(HttpStatus.OK).json({
@@ -104,7 +104,7 @@ export class PlantController {
 
   // Delete a plant
   @Delete(':id')
-  async deletePlant(@Param('id') plantId) {
+  async remove(@Param('id') plantId) {
     const plant = await this.plantService.deletePlant(plantId);
     
     if (!plant) throw new NotFoundException('Plant does not exist');

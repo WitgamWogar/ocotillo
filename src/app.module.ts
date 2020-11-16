@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './users/user.module';
 import { ConfigModule } from '@nestjs/config';
+import { ActivityModule } from './activities/activity.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -21,6 +22,7 @@ import configuration from './config/configuration';
     PhotoModule,
     AuthModule,
     UserModule,
+    ActivityModule,
   ],
   controllers: [AppController],
   providers: [

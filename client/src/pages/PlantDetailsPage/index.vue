@@ -90,27 +90,53 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text class="px-4" style="position:relative">
-              <v-fab-transition>
-                <v-btn color="green" fab dark small absolute top right>
-                  <v-icon>mdi-plus</v-icon>
+              <v-speed-dial
+                v-model="activitySpeedDial"
+                class="mt-n10"
+                top
+                right
+                absolute
+                dark
+                direction="left"
+              >
+                <template v-slot:activator>
+                  <v-btn v-model="fab" color="blue darken-2" dark fab>
+                    <v-icon v-if="fab">
+                      mdi-close
+                    </v-icon>
+                    <v-icon v-else>
+                      mdi-plus
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <v-btn
+                  v-for="item in activityTypes"
+                  fab
+                  dark
+                  small
+                  :color="item.color"
+                  :key="item.value"
+                  @click="openNewActivityDialog(item)"
+                >
+                  <v-icon>{{ item.icon }}</v-icon>
                 </v-btn>
-              </v-fab-transition>
+              </v-speed-dial>
 
               <v-timeline dense clipped class="pt-0">
                 <v-timeline-item
-                  :color="item.color"
+                  :color="activityMap[item.type].color"
                   :icon="item.icon"
                   fill-dot
-                  v-for="(item, i) in timelineItems"
+                  v-for="(item, i) in plant.activities"
                   :key="i"
                 >
                   <v-row justify="space-between">
                     <v-col cols="7">
-                      {{ item.action }}
+                      <span class="overline">{{ activityMap[item.type].text }}</span>
                     </v-col>
                     <v-col class="text-right" cols="5">
-                      <strong :class="`${item.color}--text button`">{{
-                        item.date
+                      <strong :class="`${activityMap[item.type].color}--text button`">{{
+                        item.performed_at |  moment('MM/DD/YYYY')
                       }}</strong>
                     </v-col>
                   </v-row>
@@ -125,12 +151,73 @@
       message="This plant can't be located. Maybe it was deleted?"
       v-else
     ></not-found>
+
+    <v-dialog v-model="addActivityDialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">
+            <v-icon :color="newActivity.color">{{ newActivity.icon }}</v-icon>
+            {{ newActivity.text }}
+          </span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="4">
+                <v-menu
+                  v-model="dateMenu"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="performed_at"
+                      label="Date Performed"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="performed_at"
+                    @input="dateMenu = false"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-textarea
+                  outlined
+                  v-model="newActivity.note"
+                  label="Notes"
+                  value=""
+                ></v-textarea>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="addActivityDialog = false">
+            Close
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="addActivity">
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import NotFound from '../../components/common/NotFound';
 import EditableRow from '../../components/ui/form/EditableRow';
+
 
 export default {
   components: {
@@ -142,49 +229,62 @@ export default {
       plant: {},
       notFound: false,
       editMode: false,
-      activityTypes: [
-        { text: 'Watered', value: 'watered' },
-        { text: 'Misted', value: 'misted' },
-        { text: 'Pruned', value: 'pruned' },
-        { text: 'Fertilized', value: 'fertilized' },
-        { text: 'Transplanted', value: 'transplanted' },
-      ],
-      timelineItems: [
-        {
-          action: 'Pruned',
-          date: '09/21/2020',
-          color: 'pink',
-          icon: 'mdi-content-cut',
-        },
-        {
-          action: 'Transplant',
-          date: '09/19/2020',
-          color: '#6D4C41',
-          icon: 'mdi-shovel',
-        },
-        {
-          action: 'Fertilized',
-          date: '09/15/2020',
-          color: 'teal',
-          icon: 'mdi-bottle-tonic-outline',
-        },
-        {
-          action: 'Misted',
-          date: '09/12/2020',
-          color: 'cyan',
-          icon: 'mdi-spray',
-        },
-        {
-          action: 'Watered',
-          date: '09/10/2020',
+      fab: false,
+      dateMenu: false,
+      performed_at: new Date().toISOString().substr(0, 10),
+      newActivity: {
+        note: '',
+        performed_at: new Date().toISOString(),
+      },
+      activitySpeedDial: false,
+      addActivityDialog: false,
+      activityMap: {
+        watered: {
           color: 'blue',
+          text: 'Watered',
+        },
+        misted: {
+          color: 'cyan',
+          text: 'Misted',
+        },
+        pruned: {
+          color: 'pink',
+          text: 'Pruned',
+        },
+        fertilized: {
+          color: 'teal',
+          text: 'Fertilized',
+        },
+        transplanted: {
+          color: '#6D4C41',
+          text: 'Transplanted',
+        }
+      },
+      activityTypes: [
+        {
+          text: 'Watered',
+          value: 'watered',
           icon: 'mdi-watering-can-outline',
+          color: 'blue',
+        },
+        { text: 'Misted', value: 'misted', icon: 'mdi-spray', color: 'cyan' },
+        {
+          text: 'Pruned',
+          value: 'pruned',
+          icon: 'mdi-content-cut',
+          color: 'pink',
         },
         {
-          action: 'Acquired',
-          date: '09/05/2020',
-          color: 'purple',
-          icon: 'mdi-home-outline',
+          text: 'Fertilized',
+          value: 'fertilized',
+          icon: 'mdi-bottle-tonic-outline',
+          color: 'teal',
+        },
+        {
+          text: 'Transplanted',
+          value: 'transplanted',
+          icon: 'mdi-shovel',
+          color: '#6D4C41',
         },
       ],
     };
@@ -205,6 +305,11 @@ export default {
           this.notFound = true;
         });
     },
+    openNewActivityDialog(activityType) {
+      this.newActivity = Object.assign({}, activityType);
+      this.newActivity.performed_at = new Date().toISOString().substr(0, 10);
+      this.addActivityDialog = true;
+    },
     comment() {
       const time = new Date().toTimeString();
       this.events.push({
@@ -220,6 +325,17 @@ export default {
 
       this.input = null;
     },
+    addActivity() {
+      this.newActivity.plant_id = this.plant.id;
+      this.newActivity.type = this.newActivity.value;
+      this.newActivity.performed_at = new Date(this.performed_at).toISOString();
+      this.axios.post(`activity`, this.newActivity).then(() => {
+        this.notify("Activity Added!");
+        this.getPlantData();
+        this.newActivity = {};
+        this.addActivityDialog = false;
+      });
+    }
   },
   created() {
     this.getPlantData();

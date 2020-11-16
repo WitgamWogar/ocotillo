@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { PhotoService } from '../photos/photo.service';
 import { CreatePlantDTO } from './dto/create-plant.dto';
 import { Plant } from './plant.entity';
-import { User } from '../users/user.entity';
 
 @Injectable()
 export class PlantService {
@@ -24,7 +23,6 @@ export class PlantService {
 
   // get plants for specific user
   async getUserPlants(userId: number): Promise<Plant[]> {
-    console.log(userId);
     const plants = await this.plantsRepository.find({
       where: {
         user_id: userId,
@@ -39,7 +37,7 @@ export class PlantService {
   async getPlant(plantId): Promise<Plant> {
     //TODO figure out ownership guards
     const plant = await this.plantsRepository.findOne(plantId, {
-      relations: ['photos'],
+      relations: ['photos', 'activities'],
     });
     
     return plant;

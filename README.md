@@ -49,7 +49,7 @@ $ npm run test:cov
     - [ ] Double Check Everything
 * [ ] Optimize Images
 * [ ] Plant Details Page
-* [ ] Attach All Relative Models to User
+* [X] Attach All Relative Models to User
 * [ ] Location Management
     - [ ] Locations Page
     - [ ] Assign Plants to Location
@@ -61,6 +61,8 @@ $ npm run test:cov
 * [ ] Propagation System / Page
 * [ ] Add Notes Field to Plants
 * [ ] Ability to Select Cover Image for Plants
-* [ ] Fix created_at Columns
+* [X] Fix created_at Columns
 * [ ] Address All TODO Items
-* [ ] Shared Collection on Web
+* [ ] Share Collection on Web
+
+<!-- Custom (Resource belongs to user guard?) -->

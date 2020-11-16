@@ -23,7 +23,7 @@ export class CreatePlantDTO {
   @IsNotEmpty()
   source: string;
 
-  user_id: number;  
+  user_id: number;
 
-  photos: [];
+  photos: []; 
 }

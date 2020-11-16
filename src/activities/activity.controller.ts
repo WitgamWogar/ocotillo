@@ -16,6 +16,7 @@ import { ActivityService } from './activity.service';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UserOwnsActivityGuard } from '../guards/user-owns-activity.guard';
 
 @Controller('activity')
 export class ActivityController {
@@ -40,11 +41,13 @@ export class ActivityController {
     };
   }
 
+  @UseGuards(JwtAuthGuard, UserOwnsActivityGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.activityService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard, UserOwnsActivityGuard)
   @Put(':id')
   update(
     @Param('id') id: string,
@@ -53,6 +56,7 @@ export class ActivityController {
     return this.activityService.update(+id, updateActivityDto);
   }
 
+  @UseGuards(JwtAuthGuard, UserOwnsActivityGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.activityService.remove(+id);

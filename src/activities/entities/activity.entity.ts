@@ -34,7 +34,6 @@ export class Activity {
   
   @Column()
   user_id: number;
-  
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   performed_at: Date;

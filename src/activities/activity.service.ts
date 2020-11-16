@@ -27,8 +27,10 @@ export class ActivityService {
     return activities;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} activity`;
+  async findOne(id: number): Promise<Activity> {
+    const plant = await this.activityRepository.findOne(id);
+    
+    return plant;
   }
   
   async update(id: number, updateActivityDto: UpdateActivityDto): Promise<UpdateResult> {

@@ -1,13 +1,15 @@
 <template>
   <v-card color="#ffffffd4">
     <v-card-title>
-      Activity
+      <v-icon class="mr-3">mdi-clock-start</v-icon>
+      <span class="headline">Activity</span>
+      <v-spacer></v-spacer>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text class="px-4" style="position:relative">
       <v-speed-dial
         v-model="activitySpeedDial"
-        class="mt-n12"
+        class="mt-n10"
         top
         right
         absolute
@@ -15,7 +17,7 @@
         direction="bottom"
       >
         <template v-slot:activator>
-          <v-btn v-model="fab" color="blue darken-2" dark fab>
+          <v-btn v-model="fab" color="success" dark fab small>
             <v-icon v-if="fab">
               mdi-close
             </v-icon>

@@ -66,7 +66,7 @@ export default function setup() {
                     );    
                 }
             } else if (error.response.status === 403) {
-                app.notify('You do not have permission to perform this action.', 'red');
+                app.notify('You do not have permission to view or modify this resource.', 'red');
             } else if (error.response.status === 500) {
                 app.notify(
                     'An error occurred on the server. If the issue persists, contact an administrator.',

@@ -32,10 +32,8 @@ export class PlantService {
     
     return plants;
   }
-
-  // Get a single plant
+  
   async findOne(id: number): Promise<Plant> {
-    //TODO figure out ownership guards
     const plant = await this.plantsRepository.findOne(id, {
       relations: ['photos', 'activities'],
     });

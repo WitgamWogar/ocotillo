@@ -19,6 +19,7 @@ import { CreatePlantDTO } from './dto/create-plant.dto';
 import { diskStorage } from 'multer';
 import { generateFilename, imageFileFilter } from '../utils/file-upload';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UserOwnsPlantGuard } from 'src/guards/user-owns-plant.guard';
 
 @Controller('plant')
 export class PlantController {
@@ -48,6 +49,7 @@ export class PlantController {
       fileFilter: imageFileFilter,
     }),
   )
+  // TODO protect
   async storePlantPhotos(@UploadedFiles() files, @Body('plantId') plantId) {
     const response = [];
 
@@ -81,8 +83,9 @@ export class PlantController {
   }
 
   // Fetch a particular plant using ID
-  @Get(':plantId')
-  async find(@Param('plantId') plantId) {
+  @UseGuards(JwtAuthGuard, UserOwnsPlantGuard)
+  @Get(':id')
+  async find(@Param('id') plantId) {
     const plant = await this.plantService.findOne(plantId);
     if (!plant) throw new NotFoundException('Plant does not exist!');
     return {
@@ -92,6 +95,7 @@ export class PlantController {
   }
 
   // Update a plant's details
+  // @UseGuards(JwtAuthGuard, UserOwnsPlantGuard)
   // @Put()
   // async update(@Res() res, @Query('plantID') plantID, @Body() createPlantDTO: CreatePlantDTO) {
   //     const plant = await this.plantService.updatePlant(plantID, createPlantDTO);
@@ -103,6 +107,7 @@ export class PlantController {
   // }
 
   // Delete a plant
+  @UseGuards(JwtAuthGuard, UserOwnsPlantGuard)
   @Delete(':id')
   async remove(@Param('id') plantId) {
     const plant = await this.plantService.remove(plantId);

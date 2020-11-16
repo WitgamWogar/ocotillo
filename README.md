@@ -56,7 +56,7 @@ $ npm run test:cov
     - [ ] Filter Plants by Location
 * [ ] Edit Plants
 * [ ] Activity Scheduling System
-* [ ] Activity Entries & Timelines
+* [X] Activity Entries & Timelines
 * [ ] Wishlist System / Page
 * [ ] Propagation System / Page
 * [ ] Add Notes Field to Plants
@@ -64,5 +64,7 @@ $ npm run test:cov
 * [X] Fix created_at Columns
 * [ ] Address All TODO Items
 * [ ] Share Collection on Web
+* [ ] Bulk Activities
+* [ ] Bulk Plant Creation
 
 <!-- Custom (Resource belongs to user guard?) -->

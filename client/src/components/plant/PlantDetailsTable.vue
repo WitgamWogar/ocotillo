@@ -4,10 +4,16 @@
       <v-icon class="mr-3">mdi-flower-tulip-outline</v-icon>
       <span class="headline">Basic Details</span>
       <v-spacer></v-spacer>
-      <v-btn color="green" class="ml-2" icon small>
-        <v-icon>mdi-pencil</v-icon>
+      <v-btn
+        color="rgb(11, 95, 75)"
+        class="ml-2"
+        icon
+        large>
+        <v-icon v-if="!editMode" @click="editMode = true">mdi-pencil-box-outline</v-icon>
+        <v-icon v-else @click="editMode = false">mdi-close-box-outline</v-icon>
       </v-btn>
     </v-card-title>
+    <v-divider></v-divider>
     <v-simple-table style="background-color:transparent;">
       <tbody>
         <editable-row
@@ -48,7 +54,18 @@
       </tbody>
     </v-simple-table>
 
-    <v-card-actions> </v-card-actions>
+    <v-card-actions v-if="editMode">
+      <v-col>
+        <v-btn color="grey" dark @click="editMode = false" block>
+          Cancel
+        </v-btn>
+      </v-col>
+      <v-col>
+        <v-btn color="rgb(11, 95, 75)" dark block :loading="$network.busy" @click="updatePlant">
+          Save
+        </v-btn>
+      </v-col>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -65,5 +82,12 @@ export default {
     };
   },
   props: ['plant'],
+  methods: {
+    updatePlant() {
+      this.axios.put(`plant/${this.plant.id}`, this.plant).then(() => {
+        this.notify('Plant Updated!');
+      });
+    }
+  },
 };
 </script>

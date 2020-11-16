@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { PhotoService } from '../photos/photo.service';
 import { CreatePlantDTO } from './dto/create-plant.dto';
+import { UpdatePlantDTO } from './dto/update-plant.dto';
 import { Plant } from './plant.entity';
 
 @Injectable()
@@ -12,16 +13,14 @@ export class PlantService {
     private plantsRepository: Repository<Plant>,
     private photoService: PhotoService,
   ) {}
-
-  // fetch all plants
+  
   async findAll(): Promise<Plant[]> {
     const plants = await this.plantsRepository.find({
       relations: ['photos'],
     });
     return plants;
   }
-
-  // get plants for specific user
+  
   async findAllUserPlants(userId: number): Promise<Plant[]> {
     const plants = await this.plantsRepository.find({
       where: {
@@ -40,13 +39,11 @@ export class PlantService {
     
     return plant;
   }
-
-  // post a single plant
+  
   async create(createPlantDTO: CreatePlantDTO): Promise<Plant> {
     return this.plantsRepository.save(createPlantDTO);
   }
-
-  // post a single plant
+  
   async attachPhotos(photos: [], plantId: number): Promise<[]> {
     const plant = await this.plantsRepository.findOne(plantId);
     photos.forEach(photo => {
@@ -55,15 +52,13 @@ export class PlantService {
 
     return photos;
   }
-
-  // Edit plant details
-  // async updatePlant(plantID, createPlantDTO: CreatePlantDTO): Promise<Plant> {
-  //     const updatedPlant = await this.plantModel
-  //         .findByIdAndUpdate(plantID, createPlantDTO, { new: true });
-  //     return updatedPlant;
-  // }
-
-  // Delete a plant
+  
+  async update(id: number, updatePlantDto: UpdatePlantDTO): Promise<UpdateResult> {
+    const plant = await this.plantsRepository.update(id, updatePlantDto);
+      
+    return plant;
+  }
+  
   async remove(id: number): Promise<any> {
     const deletedPlant = await this.plantsRepository.delete({
       id: id,

@@ -1,58 +1,67 @@
 <template>
   <v-dialog v-model="open" persistent max-width="600px">
     <v-card>
-      <v-card-title>
-        <span class="headline">
-          <v-icon large :color="activity.color">{{ activity.icon }}</v-icon>
-          {{ activity.id ? 'Edit' : 'Add' }} Activity: {{ activity.text }}
-        </span>
+      <v-card-title class="pb-0">
+        <v-icon :color="activity.color">{{ activity.icon }}</v-icon>
+        <span class="headline"
+          >{{ activity.id ? 'Edit' : 'Add' }} Activity:
+          {{ activity.text }}</span
+        >
       </v-card-title>
-      <v-card-text>
-        <v-container>
-          <v-row>
-            <v-col cols="12" sm="6" md="4">
-              <v-menu
-                v-model="dateMenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="performed_at"
-                    label="Date Performed"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
+      <v-card-text class="pb-0">
+        <v-row>
+          <v-col cols="12" sm="6" md="4">
+            <v-menu
+              v-model="dateMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
                   v-model="performed_at"
-                  @input="dateMenu = false"
-                ></v-date-picker>
-              </v-menu>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-textarea
-                outlined
-                v-model="activity.note"
-                label="Notes"
-                value=""
-              ></v-textarea>
-            </v-col>
-          </v-row>
-        </v-container>
+                  label="Date Performed"
+                  readonly
+                  hide-details
+                  class="mb-0"
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="performed_at"
+                @input="dateMenu = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-textarea
+              label="Activity Notes"
+              placeholder="Write something about this activity..."
+              hide-details
+              autofocus
+              v-model="activity.note"
+              value=""
+            ></v-textarea>
+          </v-col>
+        </v-row>
       </v-card-text>
+      <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')">
           Close
         </v-btn>
-        <v-btn color="blue darken-1" text @click="activity.id ? updateActivity() : createActivity()" :loading="$network.busy">
+        <v-btn
+          color="blue darken-1"
+          text
+          @click="activity.id ? updateActivity() : createActivity()"
+          :loading="$network.busy"
+        >
           Save
         </v-btn>
       </v-card-actions>
@@ -95,11 +104,10 @@ export default {
     },
     setActivityType(activityType) {
       this.activity = Object.assign(this.activity, activityType);
-      console.log(this.activity);
     },
     setActivity(activity) {
-      this.activity = activity;      
-    }
+      this.activity = activity;
+    },
   },
 };
 </script>

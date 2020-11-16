@@ -34,7 +34,7 @@ export class Plant {
     type => User,
     user => user.plants,
   )
-  @JoinColumn({ name: "user_id" }) //Otherwise it will try to do "plantId"
+  @JoinColumn({ name: "user_id" }) //Otherwise it will try to do "userId"
   user: User;
 
   @Column()
@@ -44,7 +44,7 @@ export class Plant {
   photos: Photo[];
 
   @OneToMany(type => Activity, activity => activity.plant)
-  activities: Photo[];
+  activities: Activity[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
   created_at: Date;

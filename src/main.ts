@@ -9,6 +9,7 @@ async function bootstrap() {
   app.use('/public', express.static(join(__dirname, '..', 'public')));
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
     validationError: {
       target: true,
     },

@@ -10,7 +10,7 @@
         icon
         large>
         <v-icon v-if="!editMode" @click="editMode = true">mdi-pencil-box-outline</v-icon>
-        <v-icon v-else @click="editMode = false">mdi-close-box-outline</v-icon>
+        <v-icon v-else @click="cancelEdit">mdi-close-box-outline</v-icon>
       </v-btn>
     </v-card-title>
     <v-divider></v-divider>
@@ -56,7 +56,7 @@
 
     <v-card-actions v-if="editMode">
       <v-col>
-        <v-btn color="grey" dark @click="editMode = false" block>
+        <v-btn color="grey" dark @click="cancelEdit" block>
           Cancel
         </v-btn>
       </v-col>
@@ -85,8 +85,13 @@ export default {
   methods: {
     updatePlant() {
       this.axios.put(`plant/${this.plant.id}`, this.plant).then(() => {
+        this.editMode = false;
         this.notify('Plant Updated!');
       });
+    },
+    cancelEdit() {
+      this.editMode = false;
+      this.$emit('refreshPlant');
     }
   },
 };

@@ -6,7 +6,7 @@
       </v-row>
       <v-row justify="center">
         <v-col cols="6">
-          <PlantDetailsTable :plant="plant" />
+          <PlantDetailsTable :plant="plant" @refreshPlant="getPlantData" />
           <PhotoSlider :photos="plant.photos" />
         </v-col>
         <v-col cols="6">

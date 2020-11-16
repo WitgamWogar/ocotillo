@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsDateString } from 'class-validator';
+import { IsNotEmpty, IsDateString, IsOptional } from 'class-validator';
 
 export class CreateActivityDto {
   @IsDateString({
@@ -9,12 +9,15 @@ export class CreateActivityDto {
   @IsNotEmpty()
   type: string;
   
+  @IsOptional()
   note: string;
 
   @IsNotEmpty()
   icon: string;
 
+  @IsNotEmpty()
   plant_id: number;
 
+  @IsOptional()
   user_id: number;
 }

@@ -14,7 +14,7 @@ export class PlantService {
   ) {}
 
   // fetch all plants
-  async getAllPlants(): Promise<Plant[]> {
+  async findAll(): Promise<Plant[]> {
     const plants = await this.plantsRepository.find({
       relations: ['photos'],
     });
@@ -22,7 +22,7 @@ export class PlantService {
   }
 
   // get plants for specific user
-  async getUserPlants(userId: number): Promise<Plant[]> {
+  async findAllUserPlants(userId: number): Promise<Plant[]> {
     const plants = await this.plantsRepository.find({
       where: {
         user_id: userId,
@@ -34,9 +34,9 @@ export class PlantService {
   }
 
   // Get a single plant
-  async getPlant(plantId): Promise<Plant> {
+  async findOne(id: number): Promise<Plant> {
     //TODO figure out ownership guards
-    const plant = await this.plantsRepository.findOne(plantId, {
+    const plant = await this.plantsRepository.findOne(id, {
       relations: ['photos', 'activities'],
     });
     
@@ -44,7 +44,7 @@ export class PlantService {
   }
 
   // post a single plant
-  async addPlant(createPlantDTO: CreatePlantDTO): Promise<Plant> {
+  async create(createPlantDTO: CreatePlantDTO): Promise<Plant> {
     return this.plantsRepository.save(createPlantDTO);
   }
 
@@ -66,9 +66,9 @@ export class PlantService {
   // }
 
   // Delete a plant
-  async deletePlant(plantId): Promise<any> {
+  async remove(id: number): Promise<any> {
     const deletedPlant = await this.plantsRepository.delete({
-      id: plantId,
+      id: id,
     });
     
     return deletedPlant;

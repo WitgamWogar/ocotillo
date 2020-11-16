@@ -29,7 +29,7 @@ export class PlantController {
   @UseGuards(JwtAuthGuard)
   async create(@Request() req, @Body() createPlantDTO: CreatePlantDTO) {
     createPlantDTO.user_id = req.user.userId;
-    const plant = await this.plantService.addPlant(createPlantDTO);
+    const plant = await this.plantService.create(createPlantDTO);
     
     return {
       status: HttpStatus.OK,
@@ -72,7 +72,7 @@ export class PlantController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Request() req) {
-    const plants = await this.plantService.getUserPlants(req.user.userId);
+    const plants = await this.plantService.findAllUserPlants(req.user.userId);
     
     return {
       status: HttpStatus.OK,
@@ -83,7 +83,7 @@ export class PlantController {
   // Fetch a particular plant using ID
   @Get(':plantId')
   async find(@Param('plantId') plantId) {
-    const plant = await this.plantService.getPlant(plantId);
+    const plant = await this.plantService.findOne(plantId);
     if (!plant) throw new NotFoundException('Plant does not exist!');
     return {
       status: HttpStatus.OK,
@@ -105,7 +105,7 @@ export class PlantController {
   // Delete a plant
   @Delete(':id')
   async remove(@Param('id') plantId) {
-    const plant = await this.plantService.deletePlant(plantId);
+    const plant = await this.plantService.remove(plantId);
     
     if (!plant) throw new NotFoundException('Plant does not exist');
     

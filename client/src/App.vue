@@ -43,4 +43,7 @@ export default {
   min-height: 100%;
   background-size: cover;
 }
+.pointer {
+  cursor: pointer;
+}
 </style>

@@ -6,7 +6,15 @@
         :color="actionBtn ? 'black' : 'rgba(2, 49, 0, 0.85)'"
         dense
       >
-        <v-toolbar-title class="title white--text pl-0">
+        <v-toolbar-title
+          class="title white--text pl-0 pointer"
+          @click="
+            $router.push({
+              name: 'plant.details',
+              params: { plantId: plant.id },
+            })
+          "
+        >
           {{ plant.common_name }}
         </v-toolbar-title>
 
@@ -42,20 +50,6 @@
             @click="plantFormDialogOpen = true"
           >
             <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-          <v-btn
-            fab
-            dark
-            small
-            color="indigo"
-            @click="
-              $router.push({
-                name: 'plant.details',
-                params: { plantId: plant.id },
-              })
-            "
-          >
-            <v-icon>mdi-eye</v-icon>
           </v-btn>
           <v-btn fab dark small color="red" @click="deletePlant">
             <v-icon>mdi-delete</v-icon>

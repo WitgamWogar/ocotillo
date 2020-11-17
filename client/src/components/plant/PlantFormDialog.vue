@@ -172,7 +172,8 @@ export default {
     createPlant() {
       this.axios.post(`plant`, this.plant).then(response => {
         if (this.plant.photos.length) {
-          this.uploadPhotos(response.data.data.id);
+          this.plant.id = response.data.data.id;
+          this.uploadPhotos();
         } else {
           this.handleSuccess();
         }
@@ -187,14 +188,14 @@ export default {
         }
       });
     },
-    uploadPhotos(plantId) {
+    uploadPhotos() {
       let formData = new FormData();
 
       this.plant.photos.forEach(photo => {
         formData.append('photos', photo);
       });
 
-      formData.append('plantId', plantId);
+      formData.append('plantId', this.plant.id);
 
       this.axios
         .post('plant/photos', formData, {
@@ -207,7 +208,14 @@ export default {
         });
     },
     handleSuccess(action = 'Created') {
-      this.notify(`Plant ${action}!`);
+      this.notify(
+        `Plant ${action}!`,
+        'success',
+        3000,
+        false,
+        'View Plant',
+        `/plants/${this.plant.id}`,
+      );
       this.$eventHub.$emit('plant-list-updated');
       this.close();
     },

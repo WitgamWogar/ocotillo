@@ -1,9 +1,9 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import App from './App.vue';
 import vuetify from './plugins/vuetify';
-import Validator from "./plugins/Validator";
+import Validator from './plugins/Validator';
 import NetworkBus from './plugins/NetworkBus';
-import initInterceptors from "./plugins/interceptors";
+import initInterceptors from './plugins/interceptors';
 import axios from 'axios';
 import VuetifyConfirm from 'vuetify-confirm';
 import router from './routes';
@@ -23,9 +23,8 @@ Vue.use(VuetifyConfirm, {
   icon: 'mdi-help-circle-outline',
   title: 'Confirm',
   width: 350,
-  property: '$confirm'
+  property: '$confirm',
 });
-
 
 Vue.prototype.$validator = new Vue(Validator);
 Vue.prototype.$network = new Vue(NetworkBus);
@@ -38,24 +37,37 @@ initInterceptors();
 
 Vue.mixin({
   methods: {
-      notify: function (message, color = "success", timeout = 5000) {
-          this.$eventHub.$emit('show-notification', message, color, timeout);
-      },
+    notify: function(
+      message,
+      color = 'success',
+      timeout = 5000,
+      allowClose = false,
+      actionBtnText = null,
+      actionBtnRoute = null,
+    ) {
+      this.$eventHub.$emit(
+        'show-notification',
+        message,
+        color,
+        timeout,
+        allowClose,
+        actionBtnText,
+        actionBtnRoute,
+      );
+    },
   },
   filters: {
-    moment: function (date, format = 'MMMM Do YYYY, h:mm:ss a') {
+    moment: function(date, format = 'MMMM Do YYYY, h:mm:ss a') {
       return moment(date).format(format);
-    }
-  }
+    },
+  },
 });
-
-
 
 let app = new Vue({
   router: router,
   vuetify,
   store,
-  render: h => h(App)
-}).$mount('#app')
+  render: h => h(App),
+}).$mount('#app');
 
 export default app;

@@ -41,30 +41,3 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-### Project Tasks
-
-* [ ] Auth System
-    - [ ] Refresh Tokens
-    - [ ] Double Check Everything
-* [ ] Optimize Images
-* [ ] Plant Details Page
-* [X] Attach All Relative Models to User
-* [ ] Location Management
-    - [ ] Locations Page
-    - [ ] Assign Plants to Location
-    - [ ] Filter Plants by Location
-* [ ] Edit Plants
-* [ ] Activity Scheduling System
-* [X] Activity Entries & Timelines
-* [ ] Wishlist System / Page
-* [ ] Propagation System / Page
-* [ ] Add Notes Field to Plants
-* [ ] Ability to Select Cover Image for Plants
-* [X] Fix created_at Columns
-* [ ] Address All TODO Items
-* [ ] Share Collection on Web
-* [ ] Bulk Activities
-* [ ] Bulk Plant Creation
-
-<!-- Custom (Resource belongs to user guard?) -->

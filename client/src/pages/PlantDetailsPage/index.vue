@@ -13,8 +13,17 @@
           <ActivityCard :plant="plant" @refreshPlant="getPlantData" />
         </v-col>
       </v-row>
+
+      <v-row>
+        <v-col>
+          <PlantCareNotes :plant="plant" v-if="plant && plant.id" />
+        </v-col>
+      </v-row>
     </v-container>
-    <NotFound v-else message="This plant can't be located. Maybe it was deleted?"  />
+    <NotFound
+      v-else
+      message="This plant can't be located. Maybe it was deleted?"
+    />
   </div>
 </template>
 
@@ -23,6 +32,7 @@ import NotFound from '../../components/common/NotFound';
 import ActivityCard from '../../components/activity/ActivityCard';
 import PhotoSlider from '../../components/ui/PhotoSlider';
 import PlantDetailsTable from '../../components/plant/PlantDetailsTable';
+import PlantCareNotes from '../../components/plant/PlantCareNotes';
 
 export default {
   components: {
@@ -30,6 +40,7 @@ export default {
     ActivityCard,
     PhotoSlider,
     PlantDetailsTable,
+    PlantCareNotes,
   },
   data() {
     return {

@@ -3,7 +3,7 @@ import { IsNotEmpty, IsIn, IsDateString, IsOptional } from 'class-validator';
 export class CreatePlantDTO {
   @IsNotEmpty()
   scientific_name: string;
-  
+
   @IsOptional()
   common_name: string;
 
@@ -11,7 +11,7 @@ export class CreatePlantDTO {
   nickname: string;
 
   @IsDateString({
-      message: 'acquired_at must be a valid date',
+    message: 'acquired_at must be a valid date',
   })
   acquired_at: Date;
 
@@ -25,6 +25,9 @@ export class CreatePlantDTO {
   @IsNotEmpty()
   source: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   user_id: number;
+
+  @IsOptional()
+  care_notes: string;
 }

@@ -11,6 +11,8 @@
     "axios": "^0.21.0",
     "core-js": "^3.7.0",
     "moment": "^2.29.1",
+    "tiptap": "^1.30.0",
+    "tiptap-extensions": "^1.33.2",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9",
     "vuetify": "^2.3.17",

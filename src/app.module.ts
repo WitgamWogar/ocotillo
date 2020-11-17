@@ -29,8 +29,8 @@ import configuration from './config/configuration';
     AppService,
     {
       provide: APP_INTERCEPTOR,
-      useClass: ClassSerializerInterceptor
-    }
+      useClass: ClassSerializerInterceptor,
+    },
   ],
 })
 export class AppModule {}

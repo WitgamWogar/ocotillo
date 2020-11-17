@@ -1,7 +1,11 @@
 <template>
   <v-card width="400">
     <v-img height="200px" :src="getImage()">
-      <v-app-bar flat :color="actionBtn ? 'black' : 'rgba(2, 49, 0, 0.85)'" dense>
+      <v-app-bar
+        flat
+        :color="actionBtn ? 'black' : 'rgba(2, 49, 0, 0.85)'"
+        dense
+      >
         <v-toolbar-title class="title white--text pl-0">
           {{ plant.common_name }}
         </v-toolbar-title>
@@ -30,10 +34,27 @@
               </v-icon>
             </v-btn>
           </template>
-          <v-btn fab dark small color="green">
+          <v-btn
+            fab
+            dark
+            small
+            color="green"
+            @click="plantFormDialogOpen = true"
+          >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
-          <v-btn fab dark small color="indigo" @click="$router.push({ name: 'plant.details', params: { plantId: plant.id } })">
+          <v-btn
+            fab
+            dark
+            small
+            color="indigo"
+            @click="
+              $router.push({
+                name: 'plant.details',
+                params: { plantId: plant.id },
+              })
+            "
+          >
             <v-icon>mdi-eye</v-icon>
           </v-btn>
           <v-btn fab dark small color="red" @click="deletePlant">
@@ -49,13 +70,26 @@
         <i>{{ plant.scientific_name }}</i>
       </div>
     </v-card-text>
+
+    <PlantFormDialog
+      @close="plantFormDialogOpen = false"
+      :open="plantFormDialogOpen"
+      :editing-plant="plant"
+    />
   </v-card>
 </template>
 <script>
+import PlantFormDialog from './PlantFormDialog';
+
 export default {
+  components: {
+    PlantFormDialog,
+  },
   props: ['plant'],
   data: () => ({
     actionBtn: false,
+    plantFormDialogOpen: false,
+    $plant: {},
   }),
   methods: {
     deletePlant() {

@@ -12,8 +12,8 @@
       <h1 class="flower-font">Ocotillo</h1>
     </div>
     <v-tabs centered>
-      <v-tab v-for="link in links" :key="link">
-        {{ link }}
+      <v-tab v-for="link in links" :key="link" :to="{ name: link.name }">
+        {{ link.title }}
       </v-tab>
     </v-tabs>
 
@@ -31,7 +31,24 @@
 <script>
 export default {
   data: () => ({
-    links: ['Collection', 'Wishlist', 'Propagation'],
+    links: [
+      {
+        title: 'Collection',
+        name: 'collection',
+      },
+      {
+        title: 'Wishlist',
+        name: 'wishlist',
+      },
+      {
+        title: 'Propagation',
+        name: 'propagation',
+      },
+      {
+        title: 'Locations',
+        name: 'locations',
+      },
+    ],
   }),
   methods: {
     logout() {
@@ -45,7 +62,7 @@ export default {
 <style scoped>
 .logo-container {
   cursor: pointer;
-  z-index:1;
+  z-index: 1;
   position: absolute;
 }
 </style>

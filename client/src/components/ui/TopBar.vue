@@ -12,7 +12,7 @@
       <h1 class="flower-font">Ocotillo</h1>
     </div>
     <v-tabs centered>
-      <v-tab v-for="link in links" :key="link" :to="{ name: link.name }">
+      <v-tab v-for="link in links" :key="link.name" :to="{ name: link.name }">
         {{ link.title }}
       </v-tab>
     </v-tabs>

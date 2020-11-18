@@ -4,12 +4,10 @@
       <v-icon class="mr-3">mdi-flower-tulip-outline</v-icon>
       <span class="headline">Basic Details</span>
       <v-spacer></v-spacer>
-      <v-btn
-        color="rgb(11, 95, 75)"
-        class="ml-2"
-        icon
-        large>
-        <v-icon v-if="!editMode" @click="editMode = true">mdi-pencil-box-outline</v-icon>
+      <v-btn color="rgb(11, 95, 75)" class="ml-2" icon large>
+        <v-icon v-if="!editMode" @click="editMode = true"
+          >mdi-pencil-box-outline</v-icon
+        >
         <v-icon v-else @click="cancelEdit">mdi-close-box-outline</v-icon>
       </v-btn>
     </v-card-title>
@@ -39,8 +37,12 @@
         ></editable-row>
         <editable-row
           label="Location"
-          type="text"
+          type="select"
           :edit-mode="editMode"
+          :select-options="locations"
+          :display-value="plant.location ? plant.location.name : null"
+          select-option-text="name"
+          select-option-value="id"
           v-model="plant.location"
           :error-messages="$validator.get('location')"
         ></editable-row>
@@ -61,7 +63,13 @@
         </v-btn>
       </v-col>
       <v-col>
-        <v-btn color="rgb(11, 95, 75)" dark block :loading="$network.busy" @click="updatePlant">
+        <v-btn
+          color="rgb(11, 95, 75)"
+          dark
+          block
+          :loading="$network.busy"
+          @click="updatePlant"
+        >
           Save
         </v-btn>
       </v-col>
@@ -79,6 +87,7 @@ export default {
   data() {
     return {
       editMode: false,
+      locations: [],
     };
   },
   props: ['plant'],
@@ -92,7 +101,15 @@ export default {
     cancelEdit() {
       this.editMode = false;
       this.$emit('refreshPlant');
-    }
+    },
+    getLocations() {
+      this.axios.get(`location`).then(response => {
+        this.locations = response.data;
+      });
+    },
+  },
+  mounted() {
+    this.getLocations();
   },
 };
 </script>

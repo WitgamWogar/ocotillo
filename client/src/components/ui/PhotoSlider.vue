@@ -18,6 +18,7 @@
         transition="fade-transition"
       ></v-carousel-item>
     </v-carousel>
+    <h3 class="pa-5" v-else>There are no photos here yet...</h3>
   </v-card>
 </template>
 

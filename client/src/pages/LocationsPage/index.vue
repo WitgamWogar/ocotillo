@@ -4,17 +4,17 @@
       <v-row justify="center">
         <h1 class="white--text">My Locations</h1>
       </v-row>
-      <LocationGrid />
+      <LocationList />
     </v-container>
   </div>
 </template>
 
 <script>
-import LocationGrid from '../../components/location/LocationGrid';
+import LocationList from '../../components/location/LocationList';
 
 export default {
   components: {
-    LocationGrid,
+    LocationList,
   },
   data() {
     return {

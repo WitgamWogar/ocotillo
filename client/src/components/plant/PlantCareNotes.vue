@@ -14,6 +14,10 @@
     <v-divider></v-divider>
 
     <v-card-text>
+      <h3 class="pa-5" v-if="!content">
+        There aren't any notes yet...
+      </h3>
+
       <editor-menu-bar
         :editor="editor"
         v-slot="{ commands, isActive }"

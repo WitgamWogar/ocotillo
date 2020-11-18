@@ -8,6 +8,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import { Plant } from '../plants/plant.entity';
+import { Location } from '../locations/entities/location.entity';
 
 @Entity({ name: 'users' }) //otherwise "user" is used
 export class User {
@@ -32,8 +33,17 @@ export class User {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  @OneToMany(type => Plant, plant => plant.user)
+  @OneToMany(
+    type => Plant,
+    plant => plant.user,
+  )
   plants: Plant[];
+
+  @OneToMany(
+    type => Location,
+    location => location.user,
+  )
+  locations: Location[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

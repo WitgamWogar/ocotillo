@@ -1,59 +1,64 @@
 <template>
-  <v-timeline dense clipped class="pt-0">
-    <v-timeline-item
-      :color="activityMap[item.type].color"
-      :icon="item.icon"
-      fill-dot
-      v-for="(item, i) in timeline"
-      :key="i"
-    >
-      <template v-slot:icon>
-        <v-hover v-slot="{ hover }" style="cursor:pointer">
-          <v-speed-dial v-if="hover" direction="right">
-            <template v-slot:activator>
-              <v-btn :value="hover" color="blue darken-2" dark fab small>
-                <v-icon>
-                  mdi-chevron-right
-                </v-icon>
+  <div>
+    <v-timeline dense clipped class="pt-0">
+      <v-timeline-item
+        :color="activityMap[item.type].color"
+        :icon="item.icon"
+        fill-dot
+        v-for="(item, i) in timeline"
+        :key="i"
+      >
+        <template v-slot:icon>
+          <v-hover v-slot="{ hover }" style="cursor:pointer">
+            <v-speed-dial v-if="hover" direction="right">
+              <template v-slot:activator>
+                <v-btn :value="hover" color="blue darken-2" dark fab small>
+                  <v-icon>
+                    mdi-chevron-right
+                  </v-icon>
+                </v-btn>
+              </template>
+              <v-btn fab dark small color="green" @click="editActivity(item)">
+                <v-icon>mdi-pencil</v-icon>
               </v-btn>
-            </template>
-            <v-btn fab dark small color="green" @click="editActivity(item)">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn fab dark small color="red" @click="deleteActivity(item)">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </v-speed-dial>
+              <v-btn fab dark small color="red" @click="deleteActivity(item)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-speed-dial>
 
-          <v-icon dark v-else>{{ item.icon }}</v-icon>
-        </v-hover>
-      </template>
+            <v-icon dark v-else>{{ item.icon }}</v-icon>
+          </v-hover>
+        </template>
 
-      <v-row justify="space-between">
-        <v-col cols="7">
-          <span class="overline">{{ activityMap[item.type].text }}</span>
-          <div>
-            {{ item.note }}
-          </div>
-        </v-col>
-        <v-col class="text-right" cols="5">
-          <strong :class="`${activityMap[item.type].color}--text button`">{{
-            item.performed_at | moment('MM/DD/YYYY')
-          }}</strong>
-        </v-col>
-      </v-row>
-    </v-timeline-item>
+        <v-row justify="space-between">
+          <v-col cols="7">
+            <span class="overline">{{ activityMap[item.type].text }}</span>
+            <div>
+              {{ item.note }}
+            </div>
+          </v-col>
+          <v-col class="text-right" cols="5">
+            <strong :class="`${activityMap[item.type].color}--text button`">{{
+              item.performed_at | moment('MM/DD/YYYY')
+            }}</strong>
+          </v-col>
+        </v-row>
+      </v-timeline-item>
 
-    <!-- TODO add a timeline item here for acquired_at -->
+      <!-- TODO add a timeline item here for acquired_at -->
 
-    <ActivityFormDialog
-      @close="activityFormDialogOpen = false"
-      :plant="plant"
-      @saved="handleActivitySave"
-      ref="activityFormDialog"
-      :open="activityFormDialogOpen"
-    />
-  </v-timeline>
+      <ActivityFormDialog
+        @close="activityFormDialogOpen = false"
+        :plant="plant"
+        @saved="handleActivitySave"
+        ref="activityFormDialog"
+        :open="activityFormDialogOpen"
+      />
+    </v-timeline>
+    <h3 class="pa-5" v-if="!timeline.length">
+      There isn't any activity here yet...
+    </h3>
+  </div>
 </template>
 
 <script>
@@ -123,7 +128,7 @@ export default {
         if (confirmed) {
           this.axios.delete(`activity/${activity.id}`).then(() => {
             this.$emit('refreshPlant');
-            this.notify("Activity Removed!");
+            this.notify('Activity Removed!');
           });
         }
       });

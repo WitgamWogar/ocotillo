@@ -29,7 +29,7 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" md="4">
+            <v-col cols="12" sm="6" md="4" v-if="plant.type === 'collection'">
               <v-text-field
                 label="Nickname"
                 v-model="plant.nickname"
@@ -38,7 +38,7 @@
                 persistent-hint
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" md="4">
+            <v-col cols="12" sm="6" md="4" v-if="plant.type === 'collection'">
               <v-menu
                 v-model="dateMenu"
                 :close-on-content-click="false"
@@ -62,7 +62,7 @@
                 ></v-date-picker>
               </v-menu>
             </v-col>
-            <v-col cols="12" sm="6" md="4">
+            <v-col cols="12" sm="6" md="4" v-if="plant.type === 'collection'">
               <v-select
                 v-model="plant.source"
                 :items="[
@@ -77,18 +77,13 @@
                 required
               ></v-select>
             </v-col>
-            <v-col cols="12" sm="6" md="4">
+            <v-col cols="12" sm="6" md="4" v-if="plant.type === 'collection'">
               <!-- TODO this will be propagated from locations entered by user -->
               <v-select
-                v-model="plant.location"
-                :items="[
-                  'Kitchen',
-                  'Back Patio',
-                  'Front Patio',
-                  'Living Room',
-                  'Bathroom',
-                  'Yard',
-                ]"
+                v-model="plant.location_id"
+                :items="locations"
+                item-text="name"
+                item-value="id"
                 :error-messages="$validator.get('location')"
                 label="Location"
                 required
@@ -138,17 +133,17 @@ export default {
     return {
       dateMenu: false,
       plant: {
-        scientific_name: '',
-        common_name: '',
-        nickname: '',
+        scientific_name: null,
+        common_name: null,
+        nickname: null,
         $acquired_at: new Date().toISOString().substr(0, 10),
         acquired_at: new Date().toISOString(),
-        source: '',
-        location: '',
-        type: '',
+        source: null,
+        location_id: null,
+        type: null,
         photos: [],
       },
-      busy: false,
+      locations: [],
     };
   },
   watch: {
@@ -162,7 +157,6 @@ export default {
       this.$emit('close');
     },
     save() {
-      this.plant.type = this.$route.name;
       if (this.plant.id) {
         this.updatePlant();
       } else {
@@ -219,12 +213,19 @@ export default {
       this.$eventHub.$emit('plant-list-updated');
       this.close();
     },
+    getLocations() {
+      this.axios.get(`location`).then(response => {
+        this.locations = response.data;
+      });
+    },
   },
   mounted() {
+    this.plant.type = this.$route.name;
     if (this.editingPlant) {
       this.plant = Object.assign(this.plant, this.editingPlant);
       this.plant.photos = [];
     }
+    this.getLocations();
   },
 };
 </script>

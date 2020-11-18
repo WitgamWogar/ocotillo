@@ -12,7 +12,7 @@
       </v-btn>
     </v-row>
 
-    <PlantGrid />
+    <PlantGrid plant-type="collection" />
 
     <PlantFormDialog
       @close="plantFormDialogOpen = false"

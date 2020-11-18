@@ -5,6 +5,7 @@ import WishlistPage from './pages/WishlistPage';
 import PlantDetailsPage from './pages/PlantDetailsPage';
 import LoginPage from './pages/LoginPage';
 import LocationsPage from './pages/LocationsPage';
+import PropagationPage from './pages/PropagationPage';
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,15 @@ const router = new VueRouter({
       props: false,
       meta: {
         title: 'Wishlist',
+      },
+    },
+    {
+      path: '/propagation',
+      name: 'propagation',
+      component: PropagationPage,
+      props: false,
+      meta: {
+        title: 'Propagation',
       },
     },
     {

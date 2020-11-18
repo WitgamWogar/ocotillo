@@ -15,18 +15,18 @@ export class CreatePlantDTO {
   })
   acquired_at: Date;
 
-  @IsNotEmpty()
-  location: string;
-
   @IsIn(['collection', 'wishlist'])
   type: string;
 
   @IsIn(['Purchase', 'Purchased Seed', 'Wild Seed', 'Harvested Seed', 'Clone'])
-  @IsNotEmpty()
+  @IsOptional()
   source: string;
 
   @IsOptional()
   user_id: number;
+
+  @IsOptional()
+  location_id: number;
 
   @IsOptional()
   care_notes: string;

@@ -9,6 +9,7 @@ import {
 import { Photo } from '../photos/photo.entity';
 import { User } from '../users/user.entity';
 import { Activity } from '../activities/entities/activity.entity';
+import { Location } from '../locations/entities/location.entity';
 
 @Entity({ name: 'plants' }) //otherwise "plant" is used
 export class Plant {
@@ -21,17 +22,27 @@ export class Plant {
   @Column()
   common_name: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   nickname: string;
 
-  @Column()
+  @Column({ nullable: true })
   acquired_at: Date;
 
-  @Column()
+  @Column({ nullable: true })
   source: string;
 
-  @Column()
-  location: string;
+  @ManyToOne(
+    type => Location,
+    location => location.plants,
+    {
+      onDelete: 'SET NULL',
+    },
+  )
+  @JoinColumn({ name: 'location_id' }) //Otherwise it will try to do "locationId"
+  location: Location;
+
+  @Column({ nullable: true })
+  location_id: number;
 
   @Column({ default: 'collection' })
   type: string;

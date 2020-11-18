@@ -26,13 +26,13 @@ import { UserOwnsPlantGuard } from 'src/guards/user-owns-plant.guard';
 @Controller('plant')
 export class PlantController {
   constructor(private plantService: PlantService) {}
-  
+
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Request() req, @Body() createPlantDTO: CreatePlantDTO) {
     createPlantDTO.user_id = req.user.userId;
     const plant = await this.plantService.create(createPlantDTO);
-    
+
     return {
       status: HttpStatus.OK,
       message: 'Plant created successfully!',
@@ -69,20 +69,19 @@ export class PlantController {
       data: response,
     };
   }
-  
 
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(JwtAuthGuard)
-  @Get()
-  async findAll(@Request() req) {
-    const plants = await this.plantService.findAllUserPlants(req.user.userId);
-    
+  @Get('type/:type?')
+  async findAll(@Request() req, @Param('type') type: string | null) {
+    const plants = await this.plantService.findByUser(req.user.userId, type);
+
     return {
       status: HttpStatus.OK,
       data: plants,
     };
   }
-  
+
   @UseGuards(JwtAuthGuard, UserOwnsPlantGuard)
   @Get(':id')
   async find(@Param('id') plantId) {
@@ -95,22 +94,36 @@ export class PlantController {
   }
 
   @UseGuards(JwtAuthGuard, UserOwnsPlantGuard)
-  @Put(':id')
-  async update(@Param('id') id: number, @Body() updatePlantDto: UpdatePlantDTO) {
-      const plant = await this.plantService.update(id, updatePlantDto);
-      
-      if (!plant) throw new NotFoundException('Plant does not exist!');
-      
-      return this.plantService.update(+id, updatePlantDto);
+  @Get('/location/:locationId')
+  async findByLocation(@Param('locationId') locationId) {
+    const plants = await this.plantService.findByLocation(locationId);
+
+    return {
+      status: HttpStatus.OK,
+      data: plants,
+    };
   }
-  
+
+  @UseGuards(JwtAuthGuard, UserOwnsPlantGuard)
+  @Put(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() updatePlantDto: UpdatePlantDTO,
+  ) {
+    const plant = await this.plantService.update(id, updatePlantDto);
+
+    if (!plant) throw new NotFoundException('Plant does not exist!');
+
+    return this.plantService.update(+id, updatePlantDto);
+  }
+
   @UseGuards(JwtAuthGuard, UserOwnsPlantGuard)
   @Delete(':id')
   async remove(@Param('id') plantId) {
     const plant = await this.plantService.remove(plantId);
-    
+
     if (!plant) throw new NotFoundException('Plant does not exist');
-    
+
     return {
       status: HttpStatus.OK,
       message: 'Plant has been deleted!',

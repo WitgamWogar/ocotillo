@@ -10,6 +10,7 @@ import { UserModule } from './users/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { ActivityModule } from './activities/activity.module';
 import { LocationModule } from './locations/location.module';
+import { ScheduledTaskModule } from './scheduled-tasks/scheduled-task.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -25,6 +26,7 @@ import configuration from './config/configuration';
     UserModule,
     ActivityModule,
     LocationModule,
+    ScheduledTaskModule,
   ],
   controllers: [AppController],
   providers: [

@@ -41,14 +41,14 @@
               <v-icon>mdi-sprout-outline</v-icon>
             </v-tab>
 
-            <v-tab href="#activity-tab" v-if="plant.type === 'collection'">
-              Activity
-              <v-icon>mdi-history</v-icon>
-            </v-tab>
-
             <v-tab href="#schedule-tab" v-if="plant.type === 'collection'">
               Schedules
               <v-icon>mdi-calendar-text-outline</v-icon>
+            </v-tab>
+
+            <v-tab href="#activity-tab" v-if="plant.type === 'collection'">
+              Activity
+              <v-icon>mdi-history</v-icon>
             </v-tab>
 
             <v-tab href="#notes-tab">
@@ -72,12 +72,20 @@
               </v-row>
             </v-tab-item>
 
-            <v-tab-item value="activity-tab">
-              <ActivityCard :plant="plant" @refreshPlant="getPlantData" />
+            <v-tab-item value="schedule-tab">
+              <v-row justify="center">
+                <v-col cols="7">
+                  <PlantScheduleList :plant="plant" />
+                </v-col>
+              </v-row>
             </v-tab-item>
 
-            <v-tab-item value="schedule-tab">
-              <h1>Scheduling</h1>
+            <v-tab-item value="activity-tab">
+              <v-row justify="center">
+                <v-col cols="7">
+                  <ActivityCard :plant="plant" @refreshPlant="getPlantData" />
+                </v-col>
+              </v-row>
             </v-tab-item>
 
             <v-tab-item value="notes-tab">
@@ -111,6 +119,7 @@ import PhotoSlider from '../../components/ui/PhotoSlider';
 import PlantDetailsTable from '../../components/plant/PlantDetailsTable';
 import PlantCareNotes from '../../components/plant/PlantCareNotes';
 import PlantFormDialog from '../../components/plant/PlantFormDialog';
+import PlantScheduleList from '../../components/plant/PlantScheduleList';
 
 export default {
   components: {
@@ -120,6 +129,7 @@ export default {
     PlantDetailsTable,
     PlantCareNotes,
     PlantFormDialog,
+    PlantScheduleList,
   },
   data() {
     return {

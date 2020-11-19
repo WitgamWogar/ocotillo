@@ -7,24 +7,19 @@ import {
 } from 'typeorm';
 import { Plant } from '../../plants/plant.entity';
 import { User } from '../../users/user.entity';
+import { ActivityType } from '../../activities/entities/activity-type.entity';
 
-@Entity({ name: 'activities' }) //otherwise singular is used
-export class Activity {
+@Entity({ name: 'scheduled_tasks' }) //otherwise singular is used
+export class ScheduledTask {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  type: string;
-
-  @Column({ type: 'longtext', nullable: true })
-  note: string;
-
-  @Column()
-  icon: string;
+  interval_days: number;
 
   @ManyToOne(
     type => Plant,
-    plant => plant.activities,
+    plant => plant.photos,
   )
   @JoinColumn({ name: 'plant_id' }) //Otherwise it will try to do "plantId"
   plant: Plant;
@@ -32,16 +27,23 @@ export class Activity {
   @Column()
   plant_id: number;
 
-  @ManyToOne(type => User)
+  @ManyToOne(
+    type => User,
+    user => user.plants,
+  )
   @JoinColumn({ name: 'user_id' }) //Otherwise it will try to do "userId"
   user: User;
 
   @Column()
   user_id: number;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  performed_at: Date;
+  @ManyToOne(type => ActivityType)
+  @JoinColumn({ name: 'activity_type_id' }) //Otherwise it will try to do camelcase
+  activityType: User;
+
+  @Column()
+  activity_type_id: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  created_at: Date;
+  start_at: Date;
 }

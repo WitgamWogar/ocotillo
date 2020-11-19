@@ -31,13 +31,27 @@ export class ActivityController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(JwtAuthGuard)
-  @Get(':plantId')
+  @Get('/plant/:plantId')
   async findAll(@Request() req, @Param('plantId') plantId) {
-    const activities = this.activityService.findAll(req.user.userId, plantId);
+    const activities = await this.activityService.findAll(
+      req.user.userId,
+      plantId,
+    );
 
     return {
       status: HttpStatus.OK,
       data: activities,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/types')
+  async findAllActivityTypes() {
+    const types = await this.activityService.findAllActivityTypes();
+
+    return {
+      status: HttpStatus.OK,
+      data: types,
     };
   }
 

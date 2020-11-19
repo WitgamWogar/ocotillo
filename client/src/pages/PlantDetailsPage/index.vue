@@ -4,21 +4,67 @@
       <v-row justify="center">
         <h1 class="white--text">{{ this.plant.common_name }}</h1>
       </v-row>
-      <v-row justify="center">
-        <v-col cols="6">
-          <PlantDetailsTable :plant="plant" @refreshPlant="getPlantData" />
-          <PhotoSlider :photos="plant.photos" />
-        </v-col>
-        <v-col cols="6">
-          <ActivityCard :plant="plant" @refreshPlant="getPlantData" />
-        </v-col>
-      </v-row>
+      <template>
+        <v-card color="transparent">
+          <v-tabs
+            v-model="tab"
+            background-color="rgba(5, 32, 26, 0.64)"
+            centered
+            dark
+            icons-and-text
+          >
+            <v-tabs-slider></v-tabs-slider>
 
-      <v-row>
-        <v-col>
-          <PlantCareNotes :plant="plant" v-if="plant && plant.id" />
-        </v-col>
-      </v-row>
+            <v-tab href="#details-tab">
+              Details & Photos
+              <v-icon>mdi-sprout-outline</v-icon>
+            </v-tab>
+
+            <v-tab href="#activity-tab">
+              Activity
+              <v-icon>mdi-history</v-icon>
+            </v-tab>
+
+            <v-tab href="#schedule-tab">
+              Schedules
+              <v-icon>mdi-calendar-text-outline</v-icon>
+            </v-tab>
+
+            <v-tab href="#notes-tab">
+              Notes
+              <v-icon>mdi-book-open-page-variant-outline</v-icon>
+            </v-tab>
+          </v-tabs>
+
+          <v-tabs-items v-model="tab" style="background-color:transparent;">
+            <v-tab-item value="details-tab">
+              <v-row justify="center">
+                <v-col cols="6">
+                  <PlantDetailsTable
+                    :plant="plant"
+                    @refreshPlant="getPlantData"
+                  />
+                </v-col>
+                <v-col cols="6">
+                  <PhotoSlider :photos="plant.photos" />
+                </v-col>
+              </v-row>
+            </v-tab-item>
+
+            <v-tab-item value="activity-tab">
+              <ActivityCard :plant="plant" @refreshPlant="getPlantData" />
+            </v-tab-item>
+
+            <v-tab-item value="schedule-tab">
+              <h1>Scheduling</h1>
+            </v-tab-item>
+
+            <v-tab-item value="notes-tab">
+              <PlantCareNotes :plant="plant" v-if="plant && plant.id" />
+            </v-tab-item>
+          </v-tabs-items>
+        </v-card>
+      </template>
     </v-container>
     <NotFound
       v-else
@@ -47,6 +93,7 @@ export default {
       plant: {},
       notFound: false,
       editMode: false,
+      tab: null,
     };
   },
   methods: {

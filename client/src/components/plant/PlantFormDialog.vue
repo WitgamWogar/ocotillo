@@ -3,9 +3,13 @@
     <v-card>
       <v-card-title>
         <span class="headline">
-          {{ editingPlant ? 'Edit Plant' : 'New Plant' }}
+          {{ title || 'Plant Form' }}
         </span>
       </v-card-title>
+      <v-card-subtitle v-if="wishlistTransferMode">
+        You obtained a plant from your wishlist? Awesome!<br />
+        Finish filling out these details and transfer it to your collection!
+      </v-card-subtitle>
       <v-card-text>
         <v-container>
           <v-row>
@@ -29,16 +33,17 @@
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" md="4" v-if="plant.type === 'collection'">
+            <v-col cols="12" sm="6" md="4">
               <v-text-field
                 label="Nickname"
                 v-model="plant.nickname"
                 :error-messages="$validator.get('nickname')"
+                :disabled="wishlistMode"
                 hint="e.g. Orlando Bloom"
                 persistent-hint
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" md="4" v-if="plant.type === 'collection'">
+            <v-col cols="12" sm="6" md="4">
               <v-menu
                 v-model="dateMenu"
                 :close-on-content-click="false"
@@ -52,6 +57,7 @@
                     v-model="plant.$acquired_at"
                     label="Acquisition Date"
                     readonly
+                    :disabled="wishlistMode"
                     v-bind="attrs"
                     v-on="on"
                   ></v-text-field>
@@ -62,7 +68,7 @@
                 ></v-date-picker>
               </v-menu>
             </v-col>
-            <v-col cols="12" sm="6" md="4" v-if="plant.type === 'collection'">
+            <v-col cols="12" sm="6" md="4">
               <v-select
                 v-model="plant.source"
                 :items="[
@@ -74,16 +80,17 @@
                 ]"
                 :error-messages="$validator.get('source')"
                 label="Source"
+                :disabled="wishlistMode"
                 required
               ></v-select>
             </v-col>
-            <v-col cols="12" sm="6" md="4" v-if="plant.type === 'collection'">
-              <!-- TODO this will be propagated from locations entered by user -->
+            <v-col cols="12" sm="6" md="4">
               <v-select
                 v-model="plant.location_id"
                 :items="locations"
                 item-text="name"
                 item-value="id"
+                :disabled="wishlistMode"
                 :error-messages="$validator.get('location')"
                 label="Location"
                 required
@@ -110,7 +117,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="close()">
+        <v-btn color="blue darken-1" text @click="$emit('close')">
           Close
         </v-btn>
         <v-btn
@@ -128,7 +135,7 @@
 
 <script>
 export default {
-  props: ['open', 'editingPlant'],
+  props: ['open', 'editingPlant', 'wishlistTransferMode', 'title'],
   data() {
     return {
       dateMenu: false,
@@ -144,18 +151,28 @@ export default {
         photos: [],
       },
       locations: [],
+      wishlistMode: false,
     };
   },
   watch: {
     'plant.$acquired_at': function(newVal) {
       this.plant.acquired_at = new Date(newVal).toISOString();
     },
+    open() {
+      if (!this.open) {
+        Object.assign(this.$data, this.$options.data.call(this)); // Reset
+      } else {
+        this.plant.type = this.$route.name;
+        if (this.editingPlant) {
+          this.plant = Object.assign(this.plant, this.editingPlant);
+          this.plant.photos = [];
+        }
+        this.wishlistMode =
+          !this.wishlistTransferMode && this.plant.type === 'wishlist';
+      }
+    },
   },
   methods: {
-    close() {
-      // Object.assign(this.$data, this.$options.data.call(this)); // Reset
-      this.$emit('close');
-    },
     save() {
       if (this.plant.id) {
         this.updatePlant();
@@ -174,11 +191,17 @@ export default {
       });
     },
     updatePlant() {
+      if (this.wishlistTransferMode) {
+        this.plant.type = 'collection';
+      }
+
       this.axios.put(`plant/${this.plant.id}`, this.plant).then(() => {
         if (this.plant.photos.length) {
           this.uploadPhotos(this.plant.id);
         } else {
-          this.handleSuccess('Updated');
+          this.handleSuccess(
+            this.wishlistTransferMode ? 'Added to Collection' : 'Updated',
+          );
         }
       });
     },
@@ -201,17 +224,21 @@ export default {
           this.handleSuccess();
         });
     },
-    handleSuccess(action = 'Created') {
-      this.notify(
-        `Plant ${action}!`,
-        'success',
-        3000,
-        false,
-        'View Plant',
-        `/plants/${this.plant.id}`,
-      );
+    handleSuccess(action = null) {
+      if (action) {
+        this.notify(
+          `Plant ${action}!`,
+          'success',
+          3000,
+          false,
+          'View Plant',
+          `/plants/${this.plant.id}`,
+        );
+      }
+
       this.$eventHub.$emit('plant-list-updated');
-      this.close();
+      this.$emit('saved');
+      this.$emit('close');
     },
     getLocations() {
       this.axios.get(`location`).then(response => {
@@ -220,11 +247,6 @@ export default {
     },
   },
   mounted() {
-    this.plant.type = this.$route.name;
-    if (this.editingPlant) {
-      this.plant = Object.assign(this.plant, this.editingPlant);
-      this.plant.photos = [];
-    }
     this.getLocations();
   },
 };

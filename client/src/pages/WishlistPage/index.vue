@@ -16,6 +16,7 @@
 
     <PlantFormDialog
       @close="plantFormDialogOpen = false"
+      title="Add a Wishlist Plant"
       :open="plantFormDialogOpen"
     />
   </div>

@@ -36,6 +36,7 @@
           :error-messages="$validator.get('nickname')"
         ></editable-row>
         <editable-row
+          v-if="plant.type === 'collection'"
           label="Location"
           type="select"
           :edit-mode="editMode"
@@ -47,6 +48,7 @@
           :error-messages="$validator.get('location')"
         ></editable-row>
         <editable-row
+          v-if="plant.type === 'collection'"
           label="Source"
           type="text"
           :edit-mode="editMode"

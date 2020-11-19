@@ -16,6 +16,7 @@
 
     <PlantFormDialog
       @close="plantFormDialogOpen = false"
+      title="Add a Collection Plant"
       :open="plantFormDialogOpen"
     />
   </div>

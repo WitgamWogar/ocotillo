@@ -22,13 +22,8 @@
         </v-icon>
       </v-btn>
 
-      <v-list
-        subheader
-        two-line
-        color="transparent"
-        v-if="scheduledTasks.length"
-      >
-        <v-list-item v-for="task in scheduledTasks" :key="task.id">
+      <v-list subheader two-line color="transparent" v-if="currentTasks.length">
+        <v-list-item v-for="task in currentTasks" :key="task.id">
           <v-list-item-avatar>
             <v-hover v-slot="{ hover }" style="cursor:pointer">
               <v-icon v-if="hover">mdi-pencil</v-icon>
@@ -48,12 +43,7 @@
             </v-list-item-subtitle>
 
             <v-list-item-subtitle class="caption">
-              Started on {{ task.start_at | moment('MM/DD/YYYY') }}<br />
-              Last Performed:
-              <span v-if="task.last_completed_at">
-                {{ task.last_completed_at | moment('MM/DD/YYYY') }}
-              </span>
-              <span v-else>Never</span>
+              Started on {{ task.start_at | moment('MM/DD/YYYY') }}
             </v-list-item-subtitle>
           </v-list-item-content>
 
@@ -181,7 +171,7 @@ export default {
       scheduleSpeedDial: false,
       editingTask: {},
       activityTypes: [],
-      scheduledTasks: [],
+      currentTasks: [],
     };
   },
   watch: {
@@ -195,10 +185,12 @@ export default {
     },
   },
   methods: {
-    getScheduledTasks() {
-      this.axios.get(`scheduled-task/${this.plant.id}`).then(response => {
-        this.scheduledTasks = response.data.data;
-      });
+    getCurrentTasks() {
+      this.axios
+        .get(`scheduled-task/${this.plant.id}/current`)
+        .then(response => {
+          this.currentTasks = response.data.data;
+        });
     },
     getActivityTypes() {
       this.axios.get(`activity/types`).then(response => {
@@ -219,7 +211,7 @@ export default {
       this.axios.post(`scheduled-task`, this.editingTask).then(() => {
         this.notify('Schedule Added!');
         this.taskFormDialog = false;
-        this.getScheduledTasks();
+        this.getCurrentTasks();
       });
     },
     updateScheduledTask() {
@@ -228,7 +220,7 @@ export default {
         .then(() => {
           this.notify('Schedule Updated!');
           this.taskFormDialog = false;
-          this.getScheduledTasks();
+          this.getCurrentTasks();
         });
     },
     openTaskFormDialog(task) {
@@ -242,7 +234,7 @@ export default {
         if (confirmed) {
           this.axios.delete(`scheduled-task/${task.id}`).then(() => {
             this.notify('Scheduled Task Removed!');
-            this.getScheduledTasks();
+            this.getCurrentTasks();
           });
         }
       });
@@ -250,7 +242,7 @@ export default {
   },
   mounted() {
     this.getActivityTypes();
-    this.getScheduledTasks();
+    this.getCurrentTasks();
   },
 };
 </script>

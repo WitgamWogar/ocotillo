@@ -2,10 +2,10 @@
   <v-dialog v-model="open" persistent max-width="600px">
     <v-card>
       <v-card-title class="pb-0">
-        <v-icon :color="activity.color">{{ activity.icon }}</v-icon>
+        <v-icon :color="activityType.color">{{ activityType.icon }}</v-icon>
         <span class="headline"
           >{{ activity.id ? 'Edit' : 'Add' }} Activity:
-          {{ activity.text }}</span
+          {{ activityType.name }}</span
         >
       </v-card-title>
       <v-card-text class="pb-0">
@@ -80,6 +80,7 @@ export default {
         note: '',
         performed_at: new Date().toISOString(),
       },
+      activityType: {},
     };
   },
   methods: {
@@ -99,11 +100,11 @@ export default {
     },
     transformActivity() {
       this.activity.plant_id = this.plant.id;
-      this.activity.type = this.activity.type || this.activity.value;
+      this.activity.type_id = this.activityType.id;
       this.activity.performed_at = new Date(this.performed_at).toISOString();
     },
     setActivityType(activityType) {
-      this.activity = Object.assign(this.activity, activityType);
+      this.activityType = activityType;
     },
     setActivity(activity) {
       this.activity = activity;

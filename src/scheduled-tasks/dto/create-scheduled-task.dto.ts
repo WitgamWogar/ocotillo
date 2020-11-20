@@ -17,4 +17,7 @@ export class CreateScheduledTaskDto {
     message: 'start_at must be a valid date',
   })
   start_at: Date;
+
+  @IsOptional()
+  last_completed_at: number;
 }

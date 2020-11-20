@@ -7,20 +7,22 @@ import {
 } from 'typeorm';
 import { Plant } from '../../plants/plant.entity';
 import { User } from '../../users/user.entity';
+import { ActivityType } from '../entities/activity-type.entity';
 
 @Entity({ name: 'activities' }) //otherwise singular is used
 export class Activity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ManyToOne(type => ActivityType)
+  @JoinColumn({ name: 'type_id' }) //Otherwise it will try to do camelcase
+  type: ActivityType;
+
   @Column()
-  type: string;
+  type_id: number;
 
   @Column({ type: 'longtext', nullable: true })
   note: string;
-
-  @Column()
-  icon: string;
 
   @ManyToOne(
     type => Plant,

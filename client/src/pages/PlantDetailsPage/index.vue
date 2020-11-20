@@ -41,6 +41,11 @@
               <v-icon>mdi-sprout-outline</v-icon>
             </v-tab>
 
+            <v-tab href="#tasks-tab">
+              Tasks
+              <v-icon>mdi-clipboard-list-outline</v-icon>
+            </v-tab>
+
             <v-tab href="#schedule-tab" v-if="plant.type === 'collection'">
               Schedules
               <v-icon>mdi-calendar-text-outline</v-icon>
@@ -68,6 +73,14 @@
                 </v-col>
                 <v-col cols="6">
                   <PhotoSlider :photos="plant.photos" />
+                </v-col>
+              </v-row>
+            </v-tab-item>
+
+            <v-tab-item value="tasks-tab">
+              <v-row justify="center">
+                <v-col cols="7">
+                  <CurrentTasksList :plant="plant" />
                 </v-col>
               </v-row>
             </v-tab-item>
@@ -120,6 +133,7 @@ import PlantDetailsTable from '../../components/plant/PlantDetailsTable';
 import PlantCareNotes from '../../components/plant/PlantCareNotes';
 import PlantFormDialog from '../../components/plant/PlantFormDialog';
 import PlantScheduleList from '../../components/plant/PlantScheduleList';
+import CurrentTasksList from '../../components/task/CurrentTaskList';
 
 export default {
   components: {
@@ -130,6 +144,7 @@ export default {
     PlantCareNotes,
     PlantFormDialog,
     PlantScheduleList,
+    CurrentTasksList,
   },
   data() {
     return {

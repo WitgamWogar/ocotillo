@@ -39,11 +39,14 @@ export class ScheduledTask {
 
   @ManyToOne(type => ActivityType)
   @JoinColumn({ name: 'activity_type_id' }) //Otherwise it will try to do camelcase
-  activityType: User;
+  activityType: ActivityType;
 
   @Column()
   activity_type_id: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   start_at: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  last_completed_at: Date;
 }

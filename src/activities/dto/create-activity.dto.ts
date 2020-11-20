@@ -7,13 +7,10 @@ export class CreateActivityDto {
   performed_at: Date;
 
   @IsNotEmpty()
-  type: string;
-  
+  type_id: number;
+
   @IsOptional()
   note: string;
-
-  @IsNotEmpty()
-  icon: string;
 
   @IsNotEmpty()
   plant_id: number;

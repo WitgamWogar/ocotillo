@@ -5,6 +5,7 @@ import { UpdateActivityDto } from './dto/update-activity.dto';
 import { Repository, UpdateResult } from 'typeorm';
 import { Activity } from './entities/activity.entity';
 import { ActivityType } from './entities/activity-type.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ActivityService {
@@ -13,10 +14,17 @@ export class ActivityService {
     private activityRepository: Repository<Activity>,
     @InjectRepository(ActivityType)
     private activityTypeRepository: Repository<ActivityType>,
+    private eventEmitter: EventEmitter2,
   ) {}
 
-  create(createActivityDto: CreateActivityDto): Promise<Activity> {
-    return this.activityRepository.save(createActivityDto);
+  async create(createActivityDto: CreateActivityDto): Promise<Activity> {
+    const activity = await this.activityRepository.save(createActivityDto);
+
+    this.eventEmitter.emit('activity.created', {
+      activity: activity,
+    });
+
+    return activity;
   }
 
   async findAll(userId: number, plantId: number): Promise<Activity[]> {
@@ -25,6 +33,7 @@ export class ActivityService {
         user_id: userId,
         plant_id: plantId,
       },
+      relations: ['type'],
     });
 
     return activities;

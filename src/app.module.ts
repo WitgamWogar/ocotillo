@@ -11,11 +11,13 @@ import { ConfigModule } from '@nestjs/config';
 import { ActivityModule } from './activities/activity.module';
 import { LocationModule } from './locations/location.module';
 import { ScheduledTaskModule } from './scheduled-tasks/scheduled-task.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import configuration from './config/configuration';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
+    EventEmitterModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],

@@ -49,7 +49,7 @@ export class PlantService {
 
   async findOne(id: number): Promise<Plant> {
     const plant = await this.plantsRepository.findOne(id, {
-      relations: ['photos', 'activities'],
+      relations: ['photos'],
     });
 
     return plant;

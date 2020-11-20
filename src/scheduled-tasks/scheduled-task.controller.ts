@@ -55,6 +55,21 @@ export class ScheduledTaskController {
     };
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(JwtAuthGuard)
+  @Get(':plantId/current')
+  async findAllCurrent(@Request() req, @Param('plantId') plantId) {
+    const tasks = await this.scheduledTaskService.findAllCurrent(
+      req.user.userId,
+      plantId,
+    );
+
+    return {
+      status: HttpStatus.OK,
+      data: tasks,
+    };
+  }
+
   @Get(':id')
   @UseGuards(JwtAuthGuard, UserOwnsScheduledTaskGuard)
   findOne(@Param('id') id: string) {

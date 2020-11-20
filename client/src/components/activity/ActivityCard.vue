@@ -39,7 +39,11 @@
         </v-btn>
       </v-speed-dial>
 
-      <ActivityTimeline :plant="plant" @refreshPlant="handleActivitySave" />
+      <ActivityTimeline
+        :plant="plant"
+        :activities="activities"
+        @refreshData="handleActivitySave"
+      />
     </v-card-text>
 
     <ActivityFormDialog
@@ -67,44 +71,34 @@ export default {
       createActivityDialogOpen: false,
       fab: false,
       activitySpeedDial: false,
-      activityTypes: [
-        {
-          text: 'Watered',
-          value: 'watered',
-          icon: 'mdi-watering-can-outline',
-          color: 'blue',
-        },
-        { text: 'Misted', value: 'misted', icon: 'mdi-spray', color: 'cyan' },
-        {
-          text: 'Pruned',
-          value: 'pruned',
-          icon: 'mdi-content-cut',
-          color: 'pink',
-        },
-        {
-          text: 'Fertilized',
-          value: 'fertilized',
-          icon: 'mdi-bottle-tonic-outline',
-          color: 'teal',
-        },
-        {
-          text: 'Transplanted',
-          value: 'transplanted',
-          icon: 'mdi-shovel',
-          color: '#6D4C41',
-        },
-      ],
+      activityTypes: [],
+      activities: [],
     };
   },
   methods: {
+    getActivityTypes() {
+      this.axios.get(`activity/types`).then(response => {
+        this.activityTypes = response.data.data;
+      });
+    },
+    getActivities() {
+      this.axios.get(`activity/plant/${this.plant.id}`).then(response => {
+        this.activities = response.data.data;
+      });
+    },
     openNewActivityDialog(activityType) {
       this.$refs.createActivityDialog.setActivityType(activityType);
       this.createActivityDialogOpen = true;
     },
     handleActivitySave() {
-        this.$emit('refreshPlant');
-        this.createActivityDialogOpen = false;
-    }
+      this.$emit('refreshPlant');
+      this.getActivities();
+      this.createActivityDialogOpen = false;
+    },
+  },
+  mounted() {
+    this.getActivityTypes();
+    this.getActivities();
   },
 };
 </script>

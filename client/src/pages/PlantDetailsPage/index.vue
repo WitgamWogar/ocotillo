@@ -80,7 +80,10 @@
             <v-tab-item value="tasks-tab">
               <v-row justify="center">
                 <v-col cols="7">
-                  <CurrentTasksList :plant="plant" />
+                  <CurrentTasksList
+                    :plant="plant"
+                    @refreshPlant="getPlantData"
+                  />
                 </v-col>
               </v-row>
             </v-tab-item>

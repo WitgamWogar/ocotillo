@@ -30,12 +30,9 @@
       >
         <v-list-item v-for="task in scheduledTasks" :key="task.id">
           <v-list-item-avatar>
-            <v-hover v-slot="{ hover }" style="cursor:pointer">
-              <v-icon v-if="hover">mdi-pencil</v-icon>
-              <v-icon v-else :color="task.activityType.color" dark>
-                {{ task.activityType.icon }}
-              </v-icon>
-            </v-hover>
+            <v-icon :color="task.activityType.color" dark>
+              {{ task.activityType.icon }}
+            </v-icon>
           </v-list-item-avatar>
 
           <v-list-item-content>

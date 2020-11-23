@@ -33,6 +33,9 @@ export class ActivityService {
         user_id: userId,
         plant_id: plantId,
       },
+      order: {
+        performed_at: 'ASC',
+      },
       relations: ['type'],
     });
 

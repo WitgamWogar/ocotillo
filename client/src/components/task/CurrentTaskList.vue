@@ -2,31 +2,18 @@
   <v-card color="#ffffffd4">
     <v-card-title>
       <v-icon class="mr-3">mdi-calendar-text-outline</v-icon>
-      <span class="headline">Schedules</span>
+      <span class="headline">Current Tasks</span>
       <v-spacer></v-spacer>
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text class="px-4" style="position:relative">
-      <v-btn
-        color="success"
-        dark
-        fab
-        small
-        absolute
-        right
-        top
-        @click="openTaskFormDialog({})"
-      >
-        <v-icon>
-          mdi-plus
-        </v-icon>
-      </v-btn>
-
       <v-list subheader two-line color="transparent" v-if="currentTasks.length">
         <v-list-item v-for="task in currentTasks" :key="task.id">
           <v-list-item-avatar>
             <v-hover v-slot="{ hover }" style="cursor:pointer">
-              <v-icon v-if="hover">mdi-pencil</v-icon>
+              <v-icon v-if="hover" color="success" @click="completeTask(task)"
+                >mdi-check</v-icon
+              >
               <v-icon v-else :color="task.activityType.color" dark>
                 {{ task.activityType.icon }}
               </v-icon>
@@ -39,50 +26,22 @@
             </v-list-item-title>
 
             <v-list-item-subtitle class="text--primary">
-              Every {{ task.interval_days }} Days
+              <span class="red--text" v-if="task.is_overdue">
+                Due: {{ task.due_date | moment('MM/DD/YYYY') }}
+              </span>
+              <span v-else>
+                Due: Today
+              </span>
             </v-list-item-subtitle>
 
             <v-list-item-subtitle class="caption">
-              Started on {{ task.start_at | moment('MM/DD/YYYY') }}
+              Last completed on
+              {{ task.last_completed_at | moment('MM/DD/YYYY') }}
             </v-list-item-subtitle>
           </v-list-item-content>
-
-          <v-list-item-action>
-            <v-hover v-slot="{ hover }" style="cursor:pointer">
-              <v-speed-dial v-if="true" direction="left">
-                <template v-slot:activator>
-                  <v-btn :value="hover" color="blue darken-2" dark fab x-small>
-                    <v-icon>
-                      mdi-dots-horizontal
-                    </v-icon>
-                  </v-btn>
-                </template>
-                <v-btn
-                  fab
-                  dark
-                  x-small
-                  color="green"
-                  @click="openTaskFormDialog(task)"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-                <v-btn
-                  fab
-                  dark
-                  x-small
-                  color="red"
-                  @click="deleteScheduledTask(task)"
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-              </v-speed-dial>
-              <v-icon v-else :color="task.activityType.color" dark>
-                {{ task.activityType.icon }}
-              </v-icon>
-            </v-hover>
-          </v-list-item-action>
         </v-list-item>
       </v-list>
+      <h2 v-else>All tasks are complete! Nice job!</h2>
     </v-card-text>
 
     <v-dialog v-model="taskFormDialog" max-width="500">
@@ -186,6 +145,7 @@ export default {
   },
   methods: {
     getCurrentTasks() {
+      console.log('getting current tasks');
       this.axios
         .get(`scheduled-task/${this.plant.id}/current`)
         .then(response => {
@@ -197,47 +157,18 @@ export default {
         this.activityTypes = response.data.data;
       });
     },
-    saveScheduledTask() {
-      this.editingTask.start_at = new Date(
-        this.editingTask.$start_at,
-      ).toISOString();
-
-      if (this.editingTask.id) {
-        this.updateScheduledTask();
-        return;
-      }
-
-      this.editingTask.plant_id = this.plant.id;
-      this.axios.post(`scheduled-task`, this.editingTask).then(() => {
-        this.notify('Schedule Added!');
-        this.taskFormDialog = false;
-        this.getCurrentTasks();
-      });
-    },
-    updateScheduledTask() {
+    completeTask(task) {
       this.axios
-        .put(`scheduled-task/${this.editingTask.id}`, this.editingTask)
+        .post(`activity`, {
+          plant_id: this.plant.id,
+          type_id: task.activityType.id,
+          performed_at: new Date().toISOString(),
+        })
         .then(() => {
-          this.notify('Schedule Updated!');
-          this.taskFormDialog = false;
           this.getCurrentTasks();
+          this.notify('Task Complete!');
+          this.$emit('refreshPlant');
         });
-    },
-    openTaskFormDialog(task) {
-      this.editingTask = task;
-      this.taskFormDialog = true;
-    },
-    deleteScheduledTask(task) {
-      this.$confirm(
-        `Are you sure want to delete this task (${task.activityType.name} every ${task.interval_days} days)?`,
-      ).then(confirmed => {
-        if (confirmed) {
-          this.axios.delete(`scheduled-task/${task.id}`).then(() => {
-            this.notify('Scheduled Task Removed!');
-            this.getCurrentTasks();
-          });
-        }
-      });
     },
   },
   mounted() {

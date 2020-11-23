@@ -2,12 +2,14 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  AfterLoad,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
 import { Plant } from '../../plants/plant.entity';
 import { User } from '../../users/user.entity';
 import { ActivityType } from '../../activities/entities/activity-type.entity';
+import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
 @Entity({ name: 'scheduled_tasks' }) //otherwise singular is used
 export class ScheduledTask {
@@ -49,4 +51,18 @@ export class ScheduledTask {
 
   @Column({ type: 'timestamp', nullable: true })
   last_completed_at: Date;
+
+  due_date: Date;
+
+  is_overdue: boolean;
+
+  @AfterLoad()
+  setComputed() {
+    const dueDate = new Date(this.last_completed_at);
+    let today = new Date(new Date().setUTCHours(0, 0, 0, 0));
+    dueDate.setDate(dueDate.getDate() + this.interval_days);
+
+    this.due_date = dueDate;
+    this.is_overdue = dueDate.toString() !== today.toString();
+  }
 }

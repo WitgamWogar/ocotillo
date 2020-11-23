@@ -61,16 +61,28 @@ export class ScheduledTaskService {
     userId: number,
     plantId: number,
   ): Promise<ScheduledTask[]> {
-    //TODO implement logic to find current and overdue tasks
-    const tasks = await this.scheduledTaskRepository.find({
-      where: {
+    let query = this.scheduledTaskRepository
+      .createQueryBuilder('scheduled_tasks')
+      .leftJoinAndSelect('scheduled_tasks.activityType', 'activityType')
+      .where({
         user_id: userId,
         plant_id: plantId,
-      },
-      relations: ['activityType'],
-    });
+      })
+      // There seems to be absolutely no way to get "due_date" returned to the client. #sad
+      // Instead I am going to actually have a due_date column on the entity
+      // and I am going to have to set it in the activity event... There has got to be a way to do this
+      // but I spent way too much time trying to figure out if a "virtual column" is possible
+      // https://github.com/typeorm/typeorm/issues/296
+      .addSelect(
+        'DATE_ADD(last_completed_at, INTERVAL interval_days DAY)',
+        'scheduled_tasks.due_date',
+      )
+      .andWhere('DATE(start_at) <= NOW()')
+      .andWhere(
+        'DATE_ADD(last_completed_at, INTERVAL interval_days DAY) <= NOW()',
+      );
 
-    return tasks;
+    return query.getMany();
   }
 
   async findOne(id: number): Promise<ScheduledTask> {

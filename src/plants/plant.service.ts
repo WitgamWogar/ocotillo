@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { type } from 'os';
+import { CreatePhotoDTO } from 'src/photos/dto/create-photo.dto';
 import { Photo } from 'src/photos/photo.entity';
 import { Repository, UpdateResult } from 'typeorm';
 import { PhotoService } from '../photos/photo.service';
@@ -59,13 +60,18 @@ export class PlantService {
     return this.plantsRepository.save(createPlantDTO);
   }
 
-  async attachPhotos(photos: [], plantId: number): Promise<[]> {
-    const plant = await this.plantsRepository.findOne(plantId);
-    photos.forEach(photo => {
-      this.photoService.addPhoto(photo, plantId);
-    });
+  async attachPhotos(
+    photos: CreatePhotoDTO[],
+    plantId: number,
+    userId: number,
+  ): Promise<Photo[]> {
+    const result = await this.photoService.createMultiple(
+      photos,
+      plantId,
+      userId,
+    );
 
-    return photos;
+    return result;
   }
 
   async update(

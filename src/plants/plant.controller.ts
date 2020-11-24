@@ -50,11 +50,15 @@ export class PlantController {
       fileFilter: imageFileFilter,
     }),
   )
-  // TODO protect
-  async storePlantPhotos(@UploadedFiles() files, @Body('plantId') plantId) {
+  @UseGuards(JwtAuthGuard, UserOwnsPlantGuard)
+  async storePlantPhotos(
+    @Request() req,
+    @UploadedFiles() files,
+    @Body('plantId') plantId,
+  ) {
     const response = [];
 
-    this.plantService.attachPhotos(files, plantId);
+    this.plantService.attachPhotos(files, plantId, req.user.userId);
 
     files.forEach(file => {
       const fileReponse = {

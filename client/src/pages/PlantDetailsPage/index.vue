@@ -72,7 +72,10 @@
                   />
                 </v-col>
                 <v-col cols="6">
-                  <PhotoSlider :photos="plant.photos" />
+                  <PlantPhotoSlider
+                    :plant="plant"
+                    @refreshPlant="getPlantData"
+                  />
                 </v-col>
               </v-row>
             </v-tab-item>
@@ -131,7 +134,7 @@
 <script>
 import NotFound from '../../components/common/NotFound';
 import ActivityCard from '../../components/activity/ActivityCard';
-import PhotoSlider from '../../components/ui/PhotoSlider';
+import PlantPhotoSlider from '../../components/plant-photos/PlantPhotoSlider';
 import PlantDetailsTable from '../../components/plant/PlantDetailsTable';
 import PlantCareNotes from '../../components/plant/PlantCareNotes';
 import PlantFormDialog from '../../components/plant/PlantFormDialog';
@@ -142,7 +145,7 @@ export default {
   components: {
     NotFound,
     ActivityCard,
-    PhotoSlider,
+    PlantPhotoSlider,
     PlantDetailsTable,
     PlantCareNotes,
     PlantFormDialog,
@@ -160,6 +163,7 @@ export default {
   },
   methods: {
     getPlantData() {
+      console.log('getting plant data');
       this.axios
         .get(`plant/${this.$route.params.plantId}`)
         .then(response => {

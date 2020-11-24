@@ -9,7 +9,6 @@ import {
 import { Plant } from '../../plants/plant.entity';
 import { User } from '../../users/user.entity';
 import { ActivityType } from '../../activities/entities/activity-type.entity';
-import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
 @Entity({ name: 'scheduled_tasks' }) //otherwise singular is used
 export class ScheduledTask {

@@ -55,6 +55,15 @@ Vue.mixin({
         actionBtnRoute,
       );
     },
+    groupObject(object, key) {
+      let result = object.reduce(function(r, a) {
+        r[a[key]] = r[a[key]] || [];
+        r[a[key]].push(a);
+        return r;
+      }, Object.create(null));
+
+      return result;
+    },
   },
   filters: {
     moment: function(date, format = 'MMMM Do YYYY, h:mm:ss a') {

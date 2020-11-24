@@ -19,5 +19,5 @@ export class CreateScheduledTaskDto {
   start_at: Date;
 
   @IsOptional()
-  last_completed_at: number;
+  last_completed_at: Date;
 }

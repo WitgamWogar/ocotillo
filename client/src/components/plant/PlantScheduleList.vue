@@ -193,7 +193,7 @@ export default {
   },
   methods: {
     getScheduledTasks() {
-      this.axios.get(`scheduled-task/${this.plant.id}`).then(response => {
+      this.axios.get(`scheduled-task/plant/${this.plant.id}`).then(response => {
         this.scheduledTasks = response.data.data;
       });
     },

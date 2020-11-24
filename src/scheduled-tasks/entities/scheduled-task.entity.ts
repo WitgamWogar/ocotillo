@@ -19,6 +19,9 @@ export class ScheduledTask {
   @Column()
   interval_days: number;
 
+  @Column({ default: 0 })
+  snooze_days: number;
+
   @ManyToOne(
     type => Plant,
     plant => plant.photos,

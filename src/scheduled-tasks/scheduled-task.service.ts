@@ -5,7 +5,6 @@ import { UpdateScheduledTaskDto } from './dto/update-scheduled-task.dto';
 import { ScheduledTask } from './entities/scheduled-task.entity';
 import { Repository, UpdateResult } from 'typeorm';
 import { OnEvent } from '@nestjs/event-emitter';
-import { Activity } from 'src/activities/entities/activity.entity';
 
 @Injectable()
 export class ScheduledTaskService {
@@ -15,17 +14,43 @@ export class ScheduledTaskService {
   ) {}
 
   create(createScheduledTaskDto: CreateScheduledTaskDto) {
+    createScheduledTaskDto.last_completed_at = createScheduledTaskDto.start_at;
+
     return this.scheduledTaskRepository.save(createScheduledTaskDto);
   }
 
-  async findAll(userId: number): Promise<ScheduledTask[]> {
-    const tasks = await this.scheduledTaskRepository.find({
-      where: {
+  // TODO Simplify this, findAllComplete, and findAllCurrentByPlant by using a filter instead of 3 routes
+  async findAllCurrent(userId: number): Promise<ScheduledTask[]> {
+    let query = this.scheduledTaskRepository
+      .createQueryBuilder('scheduled_tasks')
+      .leftJoinAndSelect('scheduled_tasks.activityType', 'activityType')
+      .leftJoinAndSelect('scheduled_tasks.plant', 'plant')
+      .leftJoinAndSelect('plant.photos', 'photos')
+      .where({
         user_id: userId,
-      },
-    });
+      })
+      .andWhere('DATE(start_at) <= NOW()')
+      .andWhere(
+        'DATE_ADD(last_completed_at, INTERVAL (interval_days + snooze_days) DAY) <= NOW()',
+      );
 
-    return tasks;
+    return query.getMany();
+  }
+
+  async findAllComplete(userId: number): Promise<ScheduledTask[]> {
+    let query = this.scheduledTaskRepository
+      .createQueryBuilder('scheduled_tasks')
+      .leftJoinAndSelect('scheduled_tasks.plant', 'plant')
+      .leftJoinAndSelect('scheduled_tasks.activityType', 'activityType')
+      .leftJoinAndSelect('plant.photos', 'photos')
+      .where({
+        user_id: userId,
+      })
+      .andWhere(
+        'DATE_ADD(last_completed_at, INTERVAL (interval_days + snooze_days) DAY) >= NOW()',
+      );
+
+    return query.getMany();
   }
 
   async findAllByPlant(
@@ -53,11 +78,12 @@ export class ScheduledTaskService {
       },
       {
         last_completed_at: payload.activity.performed_at,
+        snooze_days: 0,
       },
     );
   }
 
-  async findAllCurrent(
+  async findAllCurrentByPlant(
     userId: number,
     plantId: number,
   ): Promise<ScheduledTask[]> {
@@ -79,7 +105,7 @@ export class ScheduledTaskService {
       )
       .andWhere('DATE(start_at) <= NOW()')
       .andWhere(
-        'DATE_ADD(last_completed_at, INTERVAL interval_days DAY) <= NOW()',
+        'DATE_ADD(last_completed_at, INTERVAL (interval_days + snooze_days) DAY) <= NOW()',
       );
 
     return query.getMany();

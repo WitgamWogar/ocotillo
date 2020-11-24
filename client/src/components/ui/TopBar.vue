@@ -41,6 +41,10 @@ export default {
         name: 'wishlist',
       },
       {
+        title: 'Tasks',
+        name: 'tasks',
+      },
+      {
         title: 'Propagation',
         name: 'propagation',
       },

@@ -12,5 +12,6 @@ import { ActivityType } from './entities/activity-type.entity';
   ],
   controllers: [ActivityController],
   providers: [ActivityService],
+  exports: [ActivityService],
 })
 export class ActivityModule {}

@@ -6,6 +6,7 @@ import PlantDetailsPage from './pages/PlantDetailsPage';
 import LoginPage from './pages/LoginPage';
 import LocationsPage from './pages/LocationsPage';
 import PropagationPage from './pages/PropagationPage';
+import TasksPage from './pages/TasksPage';
 
 Vue.use(VueRouter);
 
@@ -64,6 +65,15 @@ const router = new VueRouter({
       props: false,
       meta: {
         title: 'Locations',
+      },
+    },
+    {
+      path: '/tasks',
+      name: 'tasks',
+      component: TasksPage,
+      props: false,
+      meta: {
+        title: 'Tasks',
       },
     },
   ],

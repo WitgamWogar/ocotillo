@@ -6,6 +6,7 @@ import { Repository, UpdateResult } from 'typeorm';
 import { Activity } from './entities/activity.entity';
 import { ActivityType } from './entities/activity-type.entity';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ScheduledTask } from 'src/scheduled-tasks/entities/scheduled-task.entity';
 
 @Injectable()
 export class ActivityService {
@@ -25,6 +26,20 @@ export class ActivityService {
     });
 
     return activity;
+  }
+
+  async createBatch(tasks: ScheduledTask[]) {
+    for (const task of tasks) {
+      await this.create({
+        plant_id: task.plant.id,
+        type_id: task.activityType.id,
+        performed_at: new Date(),
+        note: null,
+        user_id: task.user_id,
+      });
+    }
+
+    return;
   }
 
   async findAll(userId: number, plantId: number): Promise<Activity[]> {

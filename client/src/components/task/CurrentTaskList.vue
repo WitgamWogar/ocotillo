@@ -146,7 +146,9 @@ export default {
   methods: {
     getCurrentTasks() {
       this.axios
-        .get(`scheduled-task/plant/${this.plant.id}/current`)
+        .get(`scheduled-task`, {
+          params: { status: 'current', plantId: this.plant.id },
+        })
         .then(response => {
           this.currentTasks = response.data.data;
         });

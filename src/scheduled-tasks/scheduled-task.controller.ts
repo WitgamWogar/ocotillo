@@ -5,6 +5,7 @@ import {
   Body,
   Put,
   Param,
+  Query,
   Delete,
   Request,
   HttpStatus,
@@ -40,24 +41,17 @@ export class ScheduledTaskController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(JwtAuthGuard)
-  @Get('current')
-  async findAllCurrent(@Request() req) {
-    const tasks = await this.scheduledTaskService.findAllCurrent(
+  @Get('')
+  async findAll(
+    @Request() req,
+    @Query('status') status: string,
+    @Query('plantId') plantId: number,
+  ) {
+    console.log('PARMAS', status, plantId);
+    const tasks = await this.scheduledTaskService.findAll(
       req.user.userId,
-    );
-
-    return {
-      status: HttpStatus.OK,
-      data: tasks,
-    };
-  }
-
-  @UseInterceptors(ClassSerializerInterceptor)
-  @UseGuards(JwtAuthGuard)
-  @Get('complete')
-  async findAllComplete(@Request() req) {
-    const tasks = await this.scheduledTaskService.findAllComplete(
-      req.user.userId,
+      status,
+      plantId,
     );
 
     return {
@@ -71,21 +65,6 @@ export class ScheduledTaskController {
   @Get('/plant/:plantId')
   async findAllByPlant(@Request() req, @Param('plantId') plantId) {
     const tasks = await this.scheduledTaskService.findAllByPlant(
-      req.user.userId,
-      plantId,
-    );
-
-    return {
-      status: HttpStatus.OK,
-      data: tasks,
-    };
-  }
-
-  @UseInterceptors(ClassSerializerInterceptor)
-  @UseGuards(JwtAuthGuard)
-  @Get('/plant/:plantId/current')
-  async findAllCurrentByPlant(@Request() req, @Param('plantId') plantId) {
-    const tasks = await this.scheduledTaskService.findAllCurrentByPlant(
       req.user.userId,
       plantId,
     );

@@ -79,10 +79,27 @@
                     :key="task.id"
                   >
                     <v-list-item-avatar>
-                      <v-img :src="getImage(task.plant)"></v-img>
+                      <v-img
+                        :src="getImage(task.plant)"
+                        class="pointer"
+                        @click="
+                          $router.push({
+                            name: 'plant.details',
+                            params: { plantId: task.plant.id },
+                          })
+                        "
+                      ></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-title>
+                      <v-list-item-title
+                        class="pointer"
+                        @click="
+                          $router.push({
+                            name: 'plant.details',
+                            params: { plantId: task.plant.id },
+                          })
+                        "
+                      >
                         {{ task.plant.common_name }}
                       </v-list-item-title>
                       <v-list-item-subtitle>
@@ -170,7 +187,7 @@ export default {
   }),
   methods: {
     getCurrentTasks() {
-      this.axios.get(`scheduled-task/current`).then(response => {
+      this.axios.get(`scheduled-task`, { status: 'current' }).then(response => {
         this.currentTasks = this.groupObject(
           response.data.data,
           'activity_type_id',
